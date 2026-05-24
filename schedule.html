@@ -154,7 +154,7 @@
 					const m = matchMap[key][0];
 					const scoreEl = document.createElement('span');
 					scoreEl.className = 'cal-day-score ' + m.status;
-					scoreEl.textContent = m.score || '— : —';
+					scoreEl.textContent = m.score ? (m.score.us + ':' + m.score.them) : '— : —';
 					div.appendChild(scoreEl);
 
 					const iconEl = document.createElement('span');
@@ -200,8 +200,9 @@
 				const mm = getMonthNameGen(m.date.getMonth()).slice(0, 3);
 				const homeStr = m.home ? 'ШАДР' : '«' + m.opponent + '»';
 				const awayStr = m.home ? '«' + m.opponent + '»' : 'ШАДР';
-				const scoreHTML = m.score
-					? `<div class="score"><span class="${m.status === 'win' ? 'win' : 'lose'}">${m.score}</span></div>`
+				const scoreStr = m.score ? m.score.us + ':' + m.score.them : null;
+				const scoreHTML = scoreStr
+					? `<div class="score"><span class="${m.status === 'win' ? 'win' : 'lose'}">${scoreStr}</span></div>`
 					: '<div class="score"><span class="upcoming">— : —</span></div>';
 				const place = m.home ? 'Ледовая арена «Шадр»' : 'г. ' + m.opponent;
 				return `

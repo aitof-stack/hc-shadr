@@ -63,7 +63,20 @@ const defaults = {
     {num:21,name:'Чухманов Максим',pos:'Нап'},{num:31,name:'Колотыгин Алексей',pos:'Нап'},
     {num:49,name:'Сидорин Кирилл',pos:'Нап'}
   ],
-  'matches.json': [],
+  'matches.json': [
+    {date:'2026-06-01',opponent:'Далматово',home:true,score:{us:5,them:2},status:'win'},
+    {date:'2026-06-10',opponent:'Катайск',home:false,score:{us:4,them:3},status:'win'},
+    {date:'2026-06-15',opponent:'Зауралье',home:true,score:{us:2,them:3},status:'lose'},
+    {date:'2026-06-20',opponent:'Курган',home:false,score:{us:3,them:1},status:'win'},
+    {date:'2026-06-23',opponent:'Далматово',home:true,score:{us:1,them:4},status:'lose'},
+    {date:'2026-07-03',opponent:'Катайск',home:true,score:null,status:'upcoming'},
+    {date:'2026-07-10',opponent:'Зауралье',home:false,score:null,status:'upcoming'},
+    {date:'2026-07-17',opponent:'Курган',home:true,score:null,status:'upcoming'},
+    {date:'2026-07-24',opponent:'Далматово',home:false,score:null,status:'upcoming'},
+    {date:'2026-08-01',opponent:'Зауралье',home:true,score:null,status:'upcoming'},
+    {date:'2026-08-08',opponent:'Катайск',home:false,score:null,status:'upcoming'},
+    {date:'2026-08-15',opponent:'Курган',home:true,score:null,status:'upcoming'}
+  ],
   'gallery.json': [],
   'news.json': [],
   'contacts.json': { address:'', arena:'', phone:'', email:'', hours:'', socialVk:'', socialTg:'', socialYt:'' }
