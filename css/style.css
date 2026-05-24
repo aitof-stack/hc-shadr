@@ -178,7 +178,7 @@ section { padding: 90px 5%; }
 #viewCards:checked ~ .filter-bar .view-switcher label[for="viewCards"],
 #viewTable:checked ~ .filter-bar .view-switcher label[for="viewTable"] { background: var(--gold); color: var(--black); font-weight: 700; border-color: var(--gold); }
 
-/* CARDS VIEW */
+/* CARDS VIEW (фхсо.рф style) */
 .cards-view { display: none; }
 #viewCards:checked ~ .cards-view { display: block; }
 .position-group { margin-bottom: 40px; }
@@ -190,54 +190,64 @@ section { padding: 90px 5%; }
 }
 .group-title::before { content: ''; width: 28px; height: 3px; background: var(--gold); border-radius: 2px; }
 .roster-grid {
-	display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;
+	display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;
 }
 .roster-item {
-	background: var(--white); border-radius: 14px;
-	overflow: hidden; transition: .3s; box-shadow: 0 2px 10px rgba(0,0,0,.04);
+	background: var(--white); border-radius: 12px;
+	overflow: hidden; transition: .3s; box-shadow: 0 1px 6px rgba(0,0,0,.06);
 }
-.roster-item:hover { box-shadow: 0 6px 24px rgba(0,0,0,.1); }
+.roster-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
 .roster-item-info-wrapper { position: relative; perspective: 600px; }
-.roster-item-info { position: relative; width: 100%; aspect-ratio: 4/3; }
+.roster-item-info { position: relative; width: 100%; aspect-ratio: 3/4; }
 .roster-item-front, .roster-item-back {
 	position: absolute; inset: 0; backface-visibility: hidden; transition: .5s;
-	border-radius: 14px 14px 0 0; overflow: hidden;
+	overflow: hidden;
 }
 .roster-item-front {
 	background-size: cover; background-position: center;
-	display: flex; align-items: center; justify-content: center;
-	font-family: var(--font-bold); font-size: 3rem; color: rgba(0,0,0,.06);
-}
-.roster-item-info.has-photo { aspect-ratio: unset; }
-.roster-item-info.has-photo .roster-item-front {
-	position: relative; display: block;
+	position: relative;
 }
 .roster-item-front .num-badge {
-	position: absolute; bottom: 6px; right: 10px;
-	font-family: var(--font-bold); font-size: 5.6rem;
+	position: absolute; bottom: 4px; right: 8px;
+	font-family: var(--font-bold); font-size: 4.8rem;
 	color: var(--white); line-height: 1;
 	-webkit-text-stroke: 2px #000;
 	text-stroke: 2px #000;
-	text-shadow: 0 0 4px rgba(0,0,0,.5);
+	text-shadow: 0 0 3px rgba(0,0,0,.5);
+	pointer-events: none;
+	z-index: 1;
+}
+.roster-item-front .flip-trigger {
+	position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+	cursor: pointer; z-index: 2;
+	background: linear-gradient(transparent, rgba(0,0,0,.15));
 }
 .roster-item-back {
 	background: var(--black); transform: rotateY(180deg);
-	display: flex; flex-direction: column; align-items: center; justify-content: center;
-	color: var(--white); padding: 20px; text-align: center; gap: 6px;
+	padding: 16px; display: flex; flex-direction: column; gap: 8px;
+	align-items: flex-start; justify-content: center;
 }
-.roster-item-back .back-label { font-size: .7rem; color: var(--gray); text-transform: uppercase; letter-spacing: .08em; }
-.roster-item-back .back-value { font-size: .9rem; color: var(--gold); font-family: var(--font-bold); }
-.flippy-check:checked ~ .roster-item-info .roster-item-front { transform: rotateY(180deg); }
-.flippy-check:checked ~ .roster-item-info .roster-item-back { transform: rotateY(0); }
-.roster-item-main { padding: 14px 16px 16px; text-align: center; }
-.roster-item-main .person-last-name { font-family: var(--font-bold); display: block; font-size: .95rem; }
-.roster-item-main .person-first-name { font-size: .88rem; color: var(--dark); }
-.roster-item-main .person-mid-name { font-size: .88rem; color: var(--gray); }
-.roster-item-main .birthdate { font-size: .78rem; color: var(--gray); margin-top: 2px; }
+.roster-item-back .close-back {
+	position: absolute; top: 6px; right: 10px;
+	cursor: pointer; font-size: 1.1rem; color: rgba(255,255,255,.4);
+	transition: .2s; z-index: 3;
+}
+.roster-item-back .close-back:hover { color: var(--gold); }
+.backface-hider:checked ~ .roster-item-info .roster-item-front { transform: rotateY(180deg); }
+.backface-hider:checked ~ .roster-item-info .roster-item-back { transform: rotateY(0); }
+.back-row { width: 100%; }
+.back-row .back-label { display: block; font-size: .65rem; color: var(--gray); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 0; line-height: 1.3; }
+.back-row .back-value { display: block; font-size: .82rem; color: var(--white); font-family: var(--font-bold); line-height: 1.3; }
+.roster-item-main { padding: 10px 12px 14px; text-align: center; }
+.roster-item-main a { color: var(--dark); text-decoration: none; transition: .2s; display: block; }
+.roster-item-main a:hover { color: var(--gold); }
+.roster-item-main .person-last-name { font-family: var(--font-bold); display: block; font-size: .9rem; }
+.roster-item-main .person-first-name { font-size: .85rem; }
+.roster-item-main .person-mid-name { font-size: .82rem; color: var(--gray); }
 .roster-item-main .person-post {
-	display: inline-block; margin-top: 6px; padding: 3px 12px;
+	display: inline-block; margin-top: 5px; padding: 2px 10px;
 	background: var(--gold-light); color: var(--gold); border-radius: 50px;
-	font-size: .72rem; font-weight: 700;
+	font-size: .7rem; font-weight: 700;
 }
 
 /* TABLE VIEW */
@@ -510,9 +520,14 @@ footer .bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 20px; bord
 }
 @media (max-width: 480px) {
 	.roster-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+	.roster-item-info { aspect-ratio: 5/7; }
+	.roster-item-front .num-badge { font-size: 3.8rem; bottom: 2px; right: 4px; }
 	.roster-item-main { padding: 8px 8px 10px; }
 	.roster-item-main .person-last-name { font-size: .78rem; }
 	.roster-item-main .person-post { font-size: .65rem; padding: 2px 8px; }
+	.roster-item-back { padding: 10px; }
+	.back-row .back-label { font-size: .6rem; }
+	.back-row .back-value { font-size: .75rem; }
 	.hero-content { bottom: 20px; left: 16px; right: 16px; }
 	.hero h1 { font-size: clamp(1.3rem,5vw,1.8rem); }
 	.hero p { font-size: .8rem; }

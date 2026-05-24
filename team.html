@@ -115,30 +115,31 @@
 					const last = parts[0] || '';
 					const first = parts[1] || '';
 					const mid = parts[2] || '';
-					const face = p.photo
-						? `<img src="${p.photo}" alt="" style="display:block;width:100%;height:auto">`
-						: `<span style="font-size:3.5rem;font-weight:700;color:rgba(255,255,255,.06);font-family:var(--font-bold);">${last.charAt(0)}${first.charAt(0)}</span>`;
+					const bgStyle = p.photo
+						? `background-image:url(${p.photo})`
+						: `background:${color}`;
 					html += `
 						<div class="roster-item">
-							<div class="roster-item-info-wrapper">
-								<input type="checkbox" id="flip-${p.num}" class="flippy-check" hidden>
-								<div class="roster-item-info${p.photo ? ' has-photo' : ''}">
-									<div class="roster-item-front" style="background:${color};overflow:hidden;">
-										${face}
+							<div class="roster-item-info-wrapper flippy">
+								<input type="checkbox" id="flip-${p.num}" class="backface-hider" hidden>
+								<div class="roster-item-info">
+									<div class="roster-item-front" style="${bgStyle};background-size:cover;background-position:center;">
+										<label for="flip-${p.num}" class="flip-trigger"></label>
 										<div class="num-badge">${p.num}</div>
 									</div>
 									<div class="roster-item-back">
-										<span class="back-label">Дата заявки</span>
-										<span class="back-value">06.03.2025</span>
+										<label for="flip-${p.num}" class="icon close-back"></label>
+										<div class="back-row"><span class="back-label">Дата заявки</span><span class="back-value">06.03.2025</span></div>
 									</div>
 								</div>
-								<label for="flip-${p.num}" style="position:absolute;inset:0;cursor:pointer;z-index:2"></label>
 							</div>
 							<div class="roster-item-main">
-								<span class="person-last-name">${last}</span>
-								<span class="person-first-name">${first}</span>
-								<span class="person-mid-name">${mid}</span>
-								<div class="person-post">${posLabels[p.pos]}</div>
+								<a href="#">
+									<span class="person-last-name">${last}</span>
+									<span class="person-first-name">${first}</span>
+									<span class="person-mid-name">${mid}</span>
+								</a>
+								<p class="person-post">${posLabels[p.pos]}</p>
 							</div>
 						</div>`;
 				});
