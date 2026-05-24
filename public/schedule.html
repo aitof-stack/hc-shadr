@@ -42,18 +42,10 @@
 					<span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
 				</div>
 				<div class="calendar-days" id="calendarDays"></div>
-				<div class="cal-legend" style="display:flex; gap:18px; padding:6px 14px 14px; font-size:.82rem; color:var(--gray); align-items:center; flex-wrap:wrap;">
+				<div class="cal-legend">
 					<span>🏠 — Дома</span>
 					<span>✈ — В гостях</span>
-					<span style="display:inline-flex; align-items:center; gap:4px;"><span style="color:#2e7d32;font-weight:700;">5:2</span> — Победа</span>
-					<span style="display:inline-flex; align-items:center; gap:4px;"><span style="color:#c62828;font-weight:700;">2:3</span> — Поражение</span>
-					<span style="display:inline-flex; align-items:center; gap:4px;"><span style="color:var(--gold);font-weight:700;">— : —</span> — Ожидается</span>
 				</div>
-			</div>
-
-			<div class="match-list">
-				<h3 id="matchListTitle">Все матчи</h3>
-				<div id="matchList"></div>
 			</div>
 		</div>
 	</main>
@@ -167,76 +159,23 @@
 			}
 		}
 
-		function renderMatches() {
-			const list = document.getElementById('matchList');
-			const title = document.getElementById('matchListTitle');
-
-			let dayMatches;
-			if (selectedDate) {
-				const key = getDateKey(selectedDate);
-				dayMatches = matchMap[key] || [];
-				title.textContent = dayMatches.length
-					? `Матчи ${selectedDate.getDate()} ${getMonthNameGen(selectedDate.getMonth())}`
-					: `Матчи ${selectedDate.getDate()} ${getMonthNameGen(selectedDate.getMonth())}`;
-			} else {
-				dayMatches = matches.filter(m => m.date.getMonth() === currentMonth && m.date.getFullYear() === currentYear);
-				title.textContent = `Матчи ${getMonthName(currentMonth).toLowerCase()} ${currentYear}`;
-			}
-
-			if (dayMatches.length === 0) {
-				list.innerHTML = '<div class="no-matches">В этот день матчей нет</div>';
-				return;
-			}
-
-			const winTypeLabel = {ot:'(ОТ)', so:'(бул.)'};
-			const statusLabels = { win: 'Победа', lose: 'Поражение', upcoming: 'Ожидается' };
-			list.innerHTML = dayMatches.map(m => {
-				const dd = m.date.getDate();
-				const mm = getMonthNameGen(m.date.getMonth()).slice(0, 3);
-				const homeStr = m.home ? 'ШАДР' : '«' + m.opponent + '»';
-				const awayStr = m.home ? '«' + m.opponent + '»' : 'ШАДР';
-				const scoreStr = m.score && m.score.us != null ? m.score.us + ':' + m.score.them + (m.winType&&m.winType!=='reg'?' '+winTypeLabel[m.winType]:'') : null;
-				const scoreHTML = scoreStr
-					? `<div class="score"><span class="${m.status === 'win' ? 'win' : 'lose'}">${scoreStr}</span></div>`
-					: '<div class="score"><span class="upcoming">— : —</span></div>';
-				const place = m.home ? 'Ледовая арена «Шадр»' : 'г. ' + m.opponent;
-				return `
-					<div class="match-card">
-						<div class="match-date">
-							<div class="day">${dd}</div>
-							<div class="month">${mm}</div>
-						</div>
-						<div class="match-teams">
-							<div class="teams">${homeStr} — ${awayStr}</div>
-							${scoreHTML}
-							<div class="match-place">${place}</div>
-						</div>
-						<div class="match-status ${m.status}">${statusLabels[m.status]}</div>
-					</div>
-				`;
-			}).join('');
-		}
-
 		document.getElementById('prevMonth').addEventListener('click', () => {
 			currentMonth--;
 			if (currentMonth < 0) { currentMonth = 11; currentYear--; }
 			selectedDate = null;
 			renderCalendar();
-			renderMatches();
 		});
 		document.getElementById('nextMonth').addEventListener('click', () => {
 			currentMonth++;
 			if (currentMonth > 11) { currentMonth = 0; currentYear++; }
 			selectedDate = null;
 			renderCalendar();
-			renderMatches();
 		});
 
 		async function init() {
 			matches = await (await fetch('/api/matches')).json();
 			buildMatchMap();
 			renderCalendar();
-			renderMatches();
 		}
 		init();
 	</script>

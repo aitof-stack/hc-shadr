@@ -292,38 +292,7 @@ section { padding: 90px 5%; }
 
 .cal-day .cal-day-icon { font-size: .6rem; line-height: 1; opacity: .5; }
 
-/* MATCH LIST */
-.match-list { flex: 1; min-width: 0; }
-.match-list h3 { font-family: var(--font-bold); font-size: 1.2rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 20px; }
-.match-card {
-	background: var(--white); border-radius: 14px; padding: 20px 24px;
-	box-shadow: 0 2px 12px rgba(0,0,0,.04); border: 1px solid #eee;
-	display: flex; align-items: center; justify-content: space-between; gap: 20px;
-	transition: .3s; margin-bottom: 12px;
-}
-.match-card:hover { border-color: var(--gold); box-shadow: 0 4px 18px rgba(0,0,0,.08); }
-.match-date { min-width: 80px; }
-.match-date .day { font-family: var(--font-bold); font-size: 1.5rem; line-height: 1; }
-.match-date .month { font-size: .75rem; color: var(--gray); text-transform: uppercase; letter-spacing: .08em; }
-.match-teams { flex: 1; text-align: center; }
-.match-teams .teams { font-family: var(--font-bold); font-size: 1.05rem; }
-.match-teams .score { font-family: var(--font-bold); font-size: 1.6rem; margin-top: 2px; }
-.match-teams .score .win { color: #2e7d32; }
-.match-teams .score .lose { color: #c62828; }
-.match-teams .score .upcoming { color: var(--gray); }
-.match-place { font-size: .8rem; color: var(--gray); margin-top: 2px; }
-.match-status {
-	font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
-	padding: 4px 14px; border-radius: 50px;
-}
-.match-status.win { background: #e8f5e9; color: #2e7d32; }
-.match-status.lose { background: #ffebee; color: #c62828; }
-.match-status.upcoming { background: var(--gold-light); color: #856f28; }
-.status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.status-dot.win { background: #2e7d32; }
-.status-dot.lose { background: #c62828; }
-.status-dot.upcoming { background: var(--gold); }
-.no-matches { text-align: center; padding: 40px 20px; color: var(--gray); font-size: .95rem; }
+/* (match list removed) */
 
 /* GALLERY */
 .gallery-section { max-width: 1200px; margin: 60px auto; padding: 0 5%; }
@@ -493,9 +462,7 @@ footer .bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 20px; bord
 	.table-view table { font-size: .78rem; }
 	.table-view th, .table-view td { padding: 7px 6px; }
 	.schedule-wrap { padding: 0 5%; }
-	.match-card { flex-direction: column; text-align: center; padding: 14px; }
-	.match-date { min-width: auto; display: flex; gap: 6px; align-items: baseline; }
-	.match-teams .score { font-size: 1.2rem; }
+
 	.gallery-grid { grid-template-columns: 1fr; }
 	.contact-form { padding: 20px; }
 	.history-section { padding: 0 5%; }
