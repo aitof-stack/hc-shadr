@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>ХК «ШАДР» — Админ-панель</title>
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+		body { padding-top: 0; background: #f0f0f0; }
+		.admin-header { background: var(--black); color: var(--white); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; }
+		.admin-header h1 { font-family: var(--font-bold); font-size: 1.3rem; text-transform: uppercase; letter-spacing: .04em; }
+		.admin-header a { color: var(--gold); font-size: .85rem; }
+		.admin-nav { background: var(--white); border-bottom: 1px solid #ddd; display: flex; gap: 0; padding: 0 40px; }
+		.admin-nav button { padding: 14px 24px; border: none; background: none; cursor: pointer; font-family: var(--font); font-size: .9rem; color: var(--gray); border-bottom: 2px solid transparent; transition: .2s; }
+		.admin-nav button:hover { color: var(--dark); }
+		.admin-nav button.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; }
+		.admin-content { max-width: 1200px; margin: 30px auto; padding: 0 40px; }
+		.admin-panel { display: none; }
+		.admin-panel.active { display: block; }
+		.admin-card { background: var(--white); border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 20px; }
+		.admin-card h2 { font-family: var(--font-bold); font-size: 1.1rem; margin-bottom: 16px; }
+		.admin-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+		.admin-table th { background: var(--light-gray); padding: 10px 12px; text-align: left; font-family: var(--font-bold); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+		.admin-table td { padding: 10px 12px; border-bottom: 1px solid #eee; }
+		.admin-table tr:hover td { background: var(--gold-light); }
+		.admin-table input, .admin-table select { width: 100%; padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-family: var(--font); font-size: .85rem; }
+		.admin-table input:focus { border-color: var(--gold); outline: none; }
+		.btn { padding: 8px 18px; border: none; border-radius: 8px; cursor: pointer; font-family: var(--font); font-size: .82rem; transition: .2s; }
+		.btn-gold { background: var(--gold); color: var(--black); font-weight: 700; }
+		.btn-gold:hover { background: #b8942e; }
+		.btn-red { background: #c62828; color: var(--white); }
+		.btn-red:hover { background: #a02020; }
+		.btn-green { background: #2e7d32; color: var(--white); }
+		.btn-green:hover { background: #1b5e20; }
+		.btn-sm { padding: 4px 12px; font-size: .78rem; }
+		.toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+		.save-all { margin-left: auto; }
+		.toast { position: fixed; bottom: 30px; right: 30px; background: #2e7d32; color: var(--white); padding: 14px 24px; border-radius: 10px; font-size: .9rem; font-weight: 700; box-shadow: 0 4px 20px rgba(0,0,0,.2); display: none; z-index: 999; animation: fadeUp .3s; }
+		.toast.error { background: #c62828; }
+		.add-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 16px; padding: 16px; background: var(--light-gray); border-radius: 10px; }
+		.add-form input, .add-form select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-family: var(--font); font-size: .85rem; }
+		.add-form input:focus { border-color: var(--gold); outline: none; }
+		@media (max-width: 640px) {
+			.admin-header { padding: 16px 20px; flex-direction: column; gap: 8px; text-align: center; }
+			.admin-nav { padding: 0 20px; overflow-x: auto; }
+			.admin-content { padding: 0 20px; }
+			.add-form { grid-template-columns: 1fr; }
+		}
+	</style>
+</head>
+<body>
+	<div class="admin-header">
+		<h1>Админ-панель ХК «ШАДР»</h1>
+		<a href="index.html">← На сайт</a>
+	</div>
+	<nav class="admin-nav">
+		<button class="active" data-tab="players">Состав</button>
+		<button data-tab="matches">Расписание</button>
+		<button data-tab="gallery">Галерея</button>
+		<button data-tab="news">Новости</button>
+		<button data-tab="contacts">Контакты</button>
+	</nav>
+
+	<div class="admin-content">
+		<div class="admin-panel active" id="tab-players">
+			<div class="admin-card">
+				<h2>Управление составом</h2>
+				<div class="add-form" id="playerForm">
+					<input type="number" id="pNum" placeholder="Номер" min="1" max="99">
+					<input type="text" id="pName" placeholder="Фамилия Имя">
+					<select id="pPos"><option value="Вр">Вратарь</option><option value="Защ">Защитник</option><option value="Нап" selected>Нападающий</option></select>
+					<input type="file" id="pPhotoFile" accept="image/*" style="padding:4px">
+					<button class="btn btn-green" onclick="addPlayer()">+ Добавить</button>
+				</div>
+				<table class="admin-table" id="playersTable">
+					<thead><tr><th>№</th><th>Игрок</th><th>Амплуа</th><th>Фото</th><th></th></tr></thead>
+					<tbody></tbody>
+				</table>
+				<div class="toolbar">
+					<button class="btn btn-green" onclick="loadPlayers()">🔄 Обновить</button>
+					<button class="btn btn-gold save-all" onclick="savePlayers()">💾 Сохранить состав</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="admin-panel" id="tab-matches">
+			<div class="admin-card">
+				<h2>Управление расписанием</h2>
+				<div class="add-form" id="matchForm">
+					<input type="date" id="mDate">
+					<input type="text" id="mOpponent" placeholder="Соперник">
+					<select id="mHome"><option value="true">Дома</option><option value="false">В гостях</option></select>
+					<button class="btn btn-green" onclick="addMatch()">+ Добавить</button>
+				</div>
+				<table class="admin-table" id="matchesTable">
+					<thead><tr><th>Дата</th><th>Соперник</th><th>Д/В</th><th>Счёт (мы)</th><th>Счёт (они)</th><th></th></tr></thead>
+					<tbody></tbody>
+				</table>
+				<div class="toolbar">
+					<button class="btn btn-green" onclick="loadMatches()">🔄 Обновить</button>
+					<button class="btn btn-gold save-all" onclick="saveMatches()">💾 Сохранить расписание</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="admin-panel" id="tab-gallery">
+			<div class="admin-card">
+				<h2>Управление галереей</h2>
+				<div class="add-form" id="galleryForm">
+					<select id="gCat"><option value="team">Команда</option><option value="match">Матчи</option><option value="training">Тренировки</option></select>
+					<input type="text" id="gLabel" placeholder="Название">
+					<input type="text" id="gSrc" placeholder="URL фото (оставьте пустым для SVG)">
+					<button class="btn btn-green" onclick="addGallery()">+ Добавить</button>
+				</div>
+				<table class="admin-table" id="galleryTable">
+					<thead><tr><th>Категория</th><th>Название</th><th>Фото</th><th></th></tr></thead>
+					<tbody></tbody>
+				</table>
+				<div class="toolbar">
+					<button class="btn btn-green" onclick="loadGallery()">🔄 Обновить</button>
+					<button class="btn btn-gold save-all" onclick="saveGallery()">💾 Сохранить галерею</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="admin-panel" id="tab-news">
+			<div class="admin-card">
+				<h2>Управление новостями</h2>
+				<div class="add-form" id="newsForm">
+					<input type="text" id="nTitle" placeholder="Заголовок">
+					<input type="date" id="nDate">
+					<input type="text" id="nImage" placeholder="URL фото (необязательно)">
+					<button class="btn btn-green" onclick="addNews()">+ Добавить</button>
+				</div>
+				<div style="margin-bottom:12px">
+					<textarea id="nContent" placeholder="Текст новости..." style="width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-family:var(--font);font-size:.85rem;min-height:100px;resize:vertical"></textarea>
+				</div>
+				<table class="admin-table" id="newsTable">
+					<thead><tr><th>Дата</th><th>Заголовок</th><th>Текст</th><th></th></tr></thead>
+					<tbody></tbody>
+				</table>
+				<div class="toolbar">
+					<button class="btn btn-green" onclick="loadNews()">🔄 Обновить</button>
+					<button class="btn btn-gold save-all" onclick="saveNews()">💾 Сохранить новости</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="admin-panel" id="tab-contacts">
+			<div class="admin-card">
+				<h2>Управление контактами</h2>
+				<div class="add-form" id="contactsForm" style="grid-template-columns:1fr 1fr">
+					<input type="text" id="cAddress" placeholder="Адрес">
+					<input type="text" id="cArena" placeholder="Название арены">
+					<input type="text" id="cPhone" placeholder="Телефон">
+					<input type="email" id="cEmail" placeholder="Email">
+					<input type="text" id="cHours" placeholder="Часы работы (текст)">
+					<input type="text" id="cSocialVk" placeholder="ВКонтакте URL">
+					<input type="text" id="cSocialTg" placeholder="Telegram URL">
+					<input type="text" id="cSocialYt" placeholder="YouTube URL">
+				</div>
+				<div class="toolbar">
+					<button class="btn btn-green" onclick="loadContacts()">🔄 Обновить</button>
+					<button class="btn btn-gold save-all" onclick="saveContacts()">💾 Сохранить контакты</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="toast" id="toast"></div>
+
+	<script>
+		const API = {
+			async get(endpoint) { const r = await fetch(endpoint); return r.json(); },
+			async post(endpoint, data) { await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); }
+		};
+
+		function showToast(msg, err) {
+			const t = document.getElementById('toast');
+			t.textContent = msg; t.className = 'toast' + (err ? ' error' : ''); t.style.display = 'block';
+			setTimeout(() => t.style.display = 'none', 2500);
+		}
+
+		// Tab switching
+		document.querySelector('.admin-nav').addEventListener('click', e => {
+			const btn = e.target.closest('button');
+			if (!btn) return;
+			document.querySelectorAll('.admin-nav button').forEach(b => b.classList.remove('active'));
+			document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+			btn.classList.add('active');
+			document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+		});
+
+		// ── PLAYERS ──
+		let players = [];
+		async function loadPlayers() { players = await API.get('/api/players'); renderPlayers(); }
+		function renderPlayers() {
+			const tbody = document.querySelector('#playersTable tbody');
+			tbody.innerHTML = players.map((p, i) => `
+				<tr>
+					<td><input type="number" value="${p.num}" onchange="players[${i}].num=+this.value" min="1" max="99"></td>
+					<td><input type="text" value="${p.name}" onchange="players[${i}].name=this.value"></td>
+					<td><select onchange="players[${i}].pos=this.value">
+						<option value="Вр" ${p.pos==='Вр'?'selected':''}>Вратарь</option>
+						<option value="Защ" ${p.pos==='Защ'?'selected':''}>Защитник</option>
+						<option value="Нап" ${p.pos==='Нап'?'selected':''}>Нападающий</option>
+					</select></td>
+					<td style="display:flex;gap:6px;align-items:center">
+						${p.photo ? `<img src="${p.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0">` : '<span style="color:#bbb;font-size:1.2rem">○</span>'}
+						<input type="file" accept="image/*" onchange="uploadPhoto(${i}, this)" style="font-size:.75rem;flex:1">
+					</td>
+					<td><button class="btn btn-red btn-sm" onclick="players.splice(${i},1);renderPlayers()">✕</button></td>
+				</tr>`).join('');
+		}
+		async function uploadPhoto(i, input) {
+			const file = input.files[0];
+			if (!file) return;
+			const fd = new FormData();
+			fd.append('photo', file);
+			const r = await fetch('/api/upload', { method: 'POST', body: fd });
+			const data = await r.json();
+			if (data.url) { players[i].photo = data.url; renderPlayers(); showToast('Фото загружено'); }
+		}
+		async function addPlayer() {
+			const num = document.getElementById('pNum').value;
+			const name = document.getElementById('pName').value.trim();
+			const pos = document.getElementById('pPos').value;
+			const fileInput = document.getElementById('pPhotoFile');
+			if (!num || !name) return showToast('Заполните номер и имя', true);
+			const obj = { num: +num, name, pos };
+			if (fileInput.files[0]) {
+				const fd = new FormData();
+				fd.append('photo', fileInput.files[0]);
+				const r = await fetch('/api/upload', { method: 'POST', body: fd });
+				const data = await r.json();
+				if (data.url) obj.photo = data.url;
+			}
+			players.push(obj);
+			renderPlayers();
+			document.getElementById('pNum').value = ''; document.getElementById('pName').value = '';
+			fileInput.value = '';
+			showToast('Игрок добавлен');
+		}
+		async function savePlayers() { await API.post('/api/players', players); showToast('Состав сохранён!'); }
+
+		// ── MATCHES ──
+		let matches = [];
+		async function loadMatches() { matches = await API.get('/api/matches'); renderMatches(); }
+		function renderMatches() {
+			const tbody = document.querySelector('#matchesTable tbody');
+			tbody.innerHTML = matches.map((m, i) => `
+				<tr>
+					<td><input type="date" value="${m.date}" onchange="matches[${i}].date=this.value"></td>
+					<td><input type="text" value="${m.opponent}" onchange="matches[${i}].opponent=this.value"></td>
+					<td><select onchange="matches[${i}].home=this.value==='true'">
+						<option value="true" ${m.home?'selected':''}>Дома</option>
+						<option value="false" ${!m.home?'selected':''}>В гостях</option>
+					</select></td>
+					<td><input type="number" value="${m.score?.us??''}" placeholder="-" onchange="ensureScore(${i});matches[${i}].score.us=this.value?+this.value:null" style="width:60px"></td>
+					<td><input type="number" value="${m.score?.them??''}" placeholder="-" onchange="ensureScore(${i});matches[${i}].score.them=this.value?+this.value:null" style="width:60px"></td>
+					<td><button class="btn btn-red btn-sm" onclick="matches.splice(${i},1);renderMatches()">✕</button></td>
+				</tr>`).join('');
+		}
+		function ensureScore(i) { if (!matches[i].score) matches[i].score = { us: null, them: null }; }
+		function addMatch() {
+			const date = document.getElementById('mDate').value;
+			const opponent = document.getElementById('mOpponent').value.trim();
+			const home = document.getElementById('mHome').value === 'true';
+			if (!date || !opponent) return showToast('Заполните дату и соперника', true);
+			matches.push({ date, opponent, home, score: null, status: 'upcoming' });
+			renderMatches();
+			document.getElementById('mDate').value = ''; document.getElementById('mOpponent').value = '';
+			showToast('Матч добавлен');
+		}
+		async function saveMatches() {
+			matches.forEach(m => { m.status = m.score && m.score.us != null ? 'past' : 'upcoming'; });
+			await API.post('/api/matches', matches);
+			showToast('Расписание сохранено!');
+		}
+
+		// ── GALLERY ──
+		let gallery = [];
+		async function loadGallery() { gallery = await API.get('/api/gallery'); renderGallery(); }
+		function renderGallery() {
+			const tbody = document.querySelector('#galleryTable tbody');
+			tbody.innerHTML = gallery.map((g, i) => `
+				<tr>
+					<td><select onchange="gallery[${i}].category=this.value">
+						<option value="team" ${g.category==='team'?'selected':''}>Команда</option>
+						<option value="match" ${g.category==='match'?'selected':''}>Матчи</option>
+						<option value="training" ${g.category==='training'?'selected':''}>Тренировки</option>
+					</select></td>
+					<td><input type="text" value="${g.label}" onchange="gallery[${i}].label=this.value"></td>
+					<td>${g.src ? '✅' : '🔲'}</td>
+					<td><button class="btn btn-red btn-sm" onclick="gallery.splice(${i},1);renderGallery()">✕</button></td>
+				</tr>`).join('');
+		}
+		function addGallery() {
+			const category = document.getElementById('gCat').value;
+			const label = document.getElementById('gLabel').value.trim();
+			const src = document.getElementById('gSrc').value.trim() || null;
+			if (!label) return showToast('Введите название', true);
+			gallery.push({ category, label, ...(src ? { src } : {}) });
+			renderGallery();
+			document.getElementById('gLabel').value = ''; document.getElementById('gSrc').value = '';
+			showToast('Фото добавлено');
+		}
+		async function saveGallery() { await API.post('/api/gallery', gallery); showToast('Галерея сохранена!'); }
+
+		// ── NEWS ──
+		let news = [];
+		async function loadNews() { news = await API.get('/api/news'); renderNews(); }
+		function renderNews() {
+			const tbody = document.querySelector('#newsTable tbody');
+			tbody.innerHTML = news.map((n, i) => `
+				<tr>
+					<td><input type="date" value="${n.date}" onchange="news[${i}].date=this.value"></td>
+					<td><input type="text" value="${n.title}" onchange="news[${i}].title=this.value"></td>
+					<td><input type="text" value="${(n.content||'').slice(0,60)}${(n.content||'').length>60?'...':''}" onchange="news[${i}].content=this.value" placeholder="Текст..."></td>
+					<td><button class="btn btn-red btn-sm" onclick="news.splice(${i},1);renderNews()">✕</button></td>
+				</tr>`).join('');
+		}
+		function addNews() {
+			const title = document.getElementById('nTitle').value.trim();
+			const date = document.getElementById('nDate').value;
+			const content = document.getElementById('nContent').value.trim();
+			const image = document.getElementById('nImage').value.trim() || '';
+			if (!title || !date || !content) return showToast('Заполните заголовок, дату и текст', true);
+			const id = news.length ? Math.max(...news.map(n=>n.id)) + 1 : 1;
+			news.push({ id, title, date, content, image });
+			renderNews();
+			document.getElementById('nTitle').value = ''; document.getElementById('nDate').value = '';
+			document.getElementById('nContent').value = ''; document.getElementById('nImage').value = '';
+			showToast('Новость добавлена');
+		}
+		async function saveNews() { await API.post('/api/news', news); showToast('Новости сохранены!'); }
+
+		// ── CONTACTS ──
+		let contacts = {};
+		async function loadContacts() {
+			contacts = await API.get('/api/contacts');
+			document.getElementById('cAddress').value = contacts.address || '';
+			document.getElementById('cArena').value = contacts.arena || '';
+			document.getElementById('cPhone').value = contacts.phone || '';
+			document.getElementById('cEmail').value = contacts.email || '';
+			document.getElementById('cHours').value = (contacts.hours || '').replace(/<br>/g, ', ');
+			document.getElementById('cSocialVk').value = contacts.socialVk || '';
+			document.getElementById('cSocialTg').value = contacts.socialTg || '';
+			document.getElementById('cSocialYt').value = contacts.socialYt || '';
+		}
+		async function saveContacts() {
+			contacts.address = document.getElementById('cAddress').value.trim();
+			contacts.arena = document.getElementById('cArena').value.trim();
+			contacts.phone = document.getElementById('cPhone').value.trim();
+			contacts.email = document.getElementById('cEmail').value.trim();
+			contacts.hours = document.getElementById('cHours').value.trim().replace(/, /g, '<br>');
+			contacts.socialVk = document.getElementById('cSocialVk').value.trim();
+			contacts.socialTg = document.getElementById('cSocialTg').value.trim();
+			contacts.socialYt = document.getElementById('cSocialYt').value.trim();
+			await API.post('/api/contacts', contacts);
+			showToast('Контакты сохранены!');
+		}
+
+		// Init
+		loadPlayers(); loadMatches(); loadGallery(); loadNews(); loadContacts();
+	</script>
+</body>
+</html>

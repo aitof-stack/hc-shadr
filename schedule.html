@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>ХК «ШАДР» — Расписание</title>
+	<link rel="shortcut icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<header id="header">
+		<div class="logo">
+			<img src="logo.png" alt="ХК ШАДР">
+			<div class="logo-text">ХК «ШАДР»<small>Шадринск</small></div>
+		</div>
+		<button class="menu-toggle" id="menuToggle" aria-label="Меню">☰</button>
+		<nav id="nav">
+			<a href="index.html">Главная</a>
+			<a href="team.html">Состав</a>
+			<a href="schedule.html" class="active">Расписание</a>
+			<a href="gallery.html">Галерея</a>
+			<a href="history.html">История</a>
+			<a href="news.html">Новости</a>
+			<a href="contacts.html">Контакты</a>
+		</nav>
+	</header>
+
+	<main>
+		<div class="page-hero">
+			<h1>Расписание матчей</h1>
+			<p>Сезон 2025/2026 • Календарь игр</p>
+			<div class="line"></div>
+		</div>
+
+		<div class="schedule-wrap">
+			<div class="calendar">
+				<div class="calendar-header">
+					<button id="prevMonth" aria-label="Предыдущий месяц">‹</button>
+					<h3 id="monthLabel">Май 2026</h3>
+					<button id="nextMonth" aria-label="Следующий месяц">›</button>
+				</div>
+				<div class="calendar-weekdays">
+					<span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+				</div>
+				<div class="calendar-days" id="calendarDays"></div>
+				<div class="cal-legend" style="display:flex; gap:18px; padding:6px 14px 14px; font-size:.82rem; color:var(--gray); align-items:center; flex-wrap:wrap;">
+					<span>🏠 — Дома</span>
+					<span>✈ — В гостях</span>
+					<span style="display:inline-flex; align-items:center; gap:4px;"><span style="color:#2e7d32;font-weight:700;">5:2</span> — Победа</span>
+					<span style="display:inline-flex; align-items:center; gap:4px;"><span style="color:#c62828;font-weight:700;">2:3</span> — Поражение</span>
+					<span style="display:inline-flex; align-items:center; gap:4px;"><span style="color:var(--gold);font-weight:700;">— : —</span> — Ожидается</span>
+				</div>
+			</div>
+
+			<div class="match-list">
+				<h3 id="matchListTitle">Все матчи</h3>
+				<div id="matchList"></div>
+			</div>
+		</div>
+	</main>
+
+	<footer>
+		<div class="inner">
+			<div>
+				<h5>ХК «ШАДР»</h5>
+				<a href="index.html">Главная</a>
+				<a href="team.html">Состав</a>
+				<a href="schedule.html">Расписание</a>
+				<a href="gallery.html">Галерея</a>
+				<a href="history.html">История</a>
+				<a href="news.html">Новости</a>
+			</div>
+			<div>
+				<h5>Документы</h5>
+				<a href="#">Регламенты</a>
+				<a href="#">Заявки</a>
+				<a href="#">Протоколы</a>
+			</div>
+			<div class="contacts">
+				<h5>Контакты</h5>
+				<p>641800, г. Шадринск, ул. Спортивная, д. 1</p>
+				<p>+7 (35253) 3-45-67</p>
+				<p>info@hc-shadr.ru</p>
+			</div>
+		</div>
+		<div class="bottom">&copy; 2026 Хоккейный клуб «ШАДР»</div>
+	</footer>
+
+	<script>
+		const header = document.getElementById('header');
+		window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 80));
+		const toggle = document.getElementById('menuToggle');
+		const nav = document.getElementById('nav');
+		toggle.addEventListener('click', () => {
+			nav.classList.toggle('open');
+			toggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
+		});
+		nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.textContent = '☰'; }));
+
+		function getMonthName(m) { return ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'][m]; }
+		function getMonthNameGen(m) { return ['Января','Февраля','Марта','Апреля','Мая','Июня','Июля','Августа','Сентября','Октября','Ноября','Декабря'][m]; }
+
+		let matches = [];
+
+		let currentMonth = new Date().getMonth();
+		let currentYear = new Date().getFullYear();
+		let selectedDate = null;
+
+		function getDateKey(d) { return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); }
+
+		let matchMap = {};
+		function buildMatchMap() {
+			matchMap = {};
+			matches.forEach(m => {
+				m.date = new Date(m.date);
+				const key = getDateKey(m.date);
+				if (!matchMap[key]) matchMap[key] = [];
+				matchMap[key].push(m);
+			});
+		}
+
+		function renderCalendar() {
+			const daysEl = document.getElementById('calendarDays');
+			const label = document.getElementById('monthLabel');
+			label.textContent = getMonthName(currentMonth) + ' ' + currentYear;
+
+			const first = new Date(currentYear, currentMonth, 1);
+			const last = new Date(currentYear, currentMonth + 1, 0);
+			const startDay = (first.getDay() + 6) % 7;
+
+			const today = new Date();
+			const todayKey = getDateKey(today);
+
+			daysEl.innerHTML = '';
+			for (let i = 0; i < startDay; i++) {
+				const div = document.createElement('div');
+				div.className = 'cal-day other';
+				daysEl.appendChild(div);
+			}
+			for (let d = 1; d <= last.getDate(); d++) {
+				const date = new Date(currentYear, currentMonth, d);
+				const key = getDateKey(date);
+				const div = document.createElement('div');
+				div.className = 'cal-day';
+				if (key === todayKey) div.classList.add('today');
+				if (selectedDate && key === getDateKey(selectedDate)) div.classList.add('active');
+
+				const num = document.createElement('span');
+				num.className = 'cal-day-num';
+				num.textContent = d;
+				div.appendChild(num);
+
+				if (matchMap[key]) {
+					const m = matchMap[key][0];
+					const scoreEl = document.createElement('span');
+					scoreEl.className = 'cal-day-score ' + m.status;
+					scoreEl.textContent = m.score || '— : —';
+					div.appendChild(scoreEl);
+
+					const iconEl = document.createElement('span');
+					iconEl.className = 'cal-day-icon';
+					iconEl.textContent = m.home ? '🏠' : '✈';
+					div.appendChild(iconEl);
+				}
+
+				div.dataset.date = key;
+				div.addEventListener('click', () => {
+					selectedDate = date;
+					renderCalendar();
+					renderMatches();
+				});
+				daysEl.appendChild(div);
+			}
+		}
+
+		function renderMatches() {
+			const list = document.getElementById('matchList');
+			const title = document.getElementById('matchListTitle');
+
+			let dayMatches;
+			if (selectedDate) {
+				const key = getDateKey(selectedDate);
+				dayMatches = matchMap[key] || [];
+				title.textContent = dayMatches.length
+					? `Матчи ${selectedDate.getDate()} ${getMonthNameGen(selectedDate.getMonth())}`
+					: `Матчи ${selectedDate.getDate()} ${getMonthNameGen(selectedDate.getMonth())}`;
+			} else {
+				dayMatches = matches.filter(m => m.date.getMonth() === currentMonth && m.date.getFullYear() === currentYear);
+				title.textContent = `Матчи ${getMonthName(currentMonth).toLowerCase()} ${currentYear}`;
+			}
+
+			if (dayMatches.length === 0) {
+				list.innerHTML = '<div class="no-matches">В этот день матчей нет</div>';
+				return;
+			}
+
+			const statusLabels = { win: 'Победа', lose: 'Поражение', upcoming: 'Ожидается' };
+			list.innerHTML = dayMatches.map(m => {
+				const dd = m.date.getDate();
+				const mm = getMonthNameGen(m.date.getMonth()).slice(0, 3);
+				const homeStr = m.home ? 'ШАДР' : '«' + m.opponent + '»';
+				const awayStr = m.home ? '«' + m.opponent + '»' : 'ШАДР';
+				const scoreHTML = m.score
+					? `<div class="score"><span class="${m.status === 'win' ? 'win' : 'lose'}">${m.score}</span></div>`
+					: '<div class="score"><span class="upcoming">— : —</span></div>';
+				const place = m.home ? 'Ледовая арена «Шадр»' : 'г. ' + m.opponent;
+				return `
+					<div class="match-card">
+						<div class="match-date">
+							<div class="day">${dd}</div>
+							<div class="month">${mm}</div>
+						</div>
+						<div class="match-teams">
+							<div class="teams">${homeStr} — ${awayStr}</div>
+							${scoreHTML}
+							<div class="match-place">${place}</div>
+						</div>
+						<div class="match-status ${m.status}">${statusLabels[m.status]}</div>
+					</div>
+				`;
+			}).join('');
+		}
+
+		document.getElementById('prevMonth').addEventListener('click', () => {
+			currentMonth--;
+			if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+			selectedDate = null;
+			renderCalendar();
+			renderMatches();
+		});
+		document.getElementById('nextMonth').addEventListener('click', () => {
+			currentMonth++;
+			if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+			selectedDate = null;
+			renderCalendar();
+			renderMatches();
+		});
+
+		async function init() {
+			matches = await (await fetch('/api/matches')).json();
+			buildMatchMap();
+			renderCalendar();
+			renderMatches();
+		}
+		init();
+	</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>ХК «ШАДР» — Новости</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+		.news-list { max-width: 800px; margin: 0 auto; }
+		.news-card { background: var(--white); border-radius: 14px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.05); margin-bottom: 20px; transition: .3s; }
+		.news-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.1); }
+		.news-card .news-date { font-size: .78rem; color: var(--gray); margin-bottom: 6px; }
+		.news-card h3 { font-family: var(--font-bold); font-size: 1.15rem; margin-bottom: 10px; }
+		.news-card p { font-size: .9rem; line-height: 1.6; color: var(--dark); }
+		.news-card img { width: 100%; border-radius: 10px; margin-bottom: 14px; max-height: 400px; object-fit: cover; }
+		.no-news { text-align: center; padding: 60px 0; color: var(--gray); font-size: .95rem; }
+	</style>
+</head>
+<body>
+	<header id="header">
+		<div class="logo">
+			<img src="logo.png" alt="ХК ШАДР">
+			<div class="logo-text">ХК «ШАДР»<small>Шадринск</small></div>
+		</div>
+		<button class="menu-toggle" id="menuToggle" aria-label="Меню">☰</button>
+		<nav id="nav">
+			<a href="index.html">Главная</a>
+			<a href="team.html">Состав</a>
+			<a href="schedule.html">Расписание</a>
+			<a href="gallery.html">Галерея</a>
+			<a href="history.html">История</a>
+			<a href="news.html" class="active">Новости</a>
+			<a href="contacts.html">Контакты</a>
+		</nav>
+	</header>
+
+	<main>
+		<div class="page-hero">
+			<h1>Новости</h1>
+			<p>Последние события ХК «ШАДР»</p>
+			<div class="line"></div>
+		</div>
+
+		<div class="section">
+			<div class="news-list" id="newsList"></div>
+		</div>
+	</main>
+
+	<footer>
+		<div class="inner">
+			<div>
+				<h5>ХК «ШАДР»</h5>
+				<a href="index.html">Главная</a>
+				<a href="team.html">Состав</a>
+				<a href="schedule.html">Расписание</a>
+				<a href="gallery.html">Галерея</a>
+				<a href="history.html">История</a>
+				<a href="news.html">Новости</a>
+			</div>
+			<div>
+				<h5>Документы</h5>
+				<a href="#">Регламенты</a>
+				<a href="#">Заявки</a>
+				<a href="#">Протоколы</a>
+			</div>
+			<div class="contacts">
+				<h5>Контакты</h5>
+				<p>641800, г. Шадринск, ул. Спортивная, д. 1</p>
+				<p>+7 (35253) 3-45-67</p>
+				<p>info@hc-shadr.ru</p>
+			</div>
+		</div>
+		<div class="bottom">&copy; 2026 Хоккейный клуб «ШАДР»</div>
+	</footer>
+
+	<script>
+		const header = document.getElementById('header');
+		window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 80));
+		const toggle = document.getElementById('menuToggle');
+		const nav = document.getElementById('nav');
+		toggle.addEventListener('click', () => {
+			nav.classList.toggle('open');
+			toggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
+		});
+		nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.textContent = '☰'; }));
+
+		async function loadNews() {
+			const list = document.getElementById('newsList');
+			try {
+				const news = await (await fetch('/api/news')).json();
+				if (!news.length) {
+					list.innerHTML = '<div class="no-news">Новостей пока нет</div>';
+					return;
+				}
+				list.innerHTML = news.sort((a,b) => b.id - a.id).map(n => `
+					<div class="news-card">
+						<div class="news-date">${formatDate(n.date)}</div>
+						${n.image ? `<img src="${n.image}" alt="${n.title}">` : ''}
+						<h3>${n.title}</h3>
+						<p>${n.content}</p>
+					</div>
+				`).join('');
+			} catch(e) {
+				list.innerHTML = '<div class="no-news">Ошибка загрузки новостей</div>';
+			}
+		}
+		function formatDate(d) {
+			const date = new Date(d + 'T00:00:00');
+			const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+			return date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+		}
+		loadNews();
+	</script>
+</body>
+</html>

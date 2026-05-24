@@ -1,0 +1,14 @@
+[
+  { "category": "team", "label": "Командное фото 2026", "className": "wide", "src": "https://downloader.disk.yandex.ru/preview/323aa9ba0d2bf1b569cd6fc6d01bb74ce3efbaddd20cbcce7cdda360708be25e/6a121e22/F8GrUs-1Nj38uUqyAVRcbvaSfKZzaB8R24XIj9ix1ATf1hoaFXB1IBQgPbZdHZ2IJ0zvTOAbo5ENHT4klvy3wg%3D%3D?uid=0&filename=otS58YAqtcWtSm3VoVarOG--ImYJvWwUCHuxQywUHkO0qi7Mps8zRcpRkSW_KKMKUgJbn35D5kCqPCobf9AIz_M_.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&is_direct_zip_experiment=1&size=2048x2048" },
+  { "category": "match", "label": "Матч с «Зауральем»" },
+  { "category": "match", "label": "Домашняя игра" },
+  { "category": "training", "label": "Тренировка на льду" },
+  { "category": "match", "label": "Победа над «Катайском»" },
+  { "category": "team", "label": "В раздевалке" },
+  { "category": "training", "label": "ОФП в зале" },
+  { "category": "match", "label": "Выездной матч", "className": "tall" },
+  { "category": "training", "label": "Разминка" },
+  { "category": "team", "label": "Болельщики" },
+  { "category": "match", "label": "Финальная серия" },
+  { "category": "training", "label": "Работа над броском" }
+]

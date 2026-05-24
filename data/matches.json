@@ -1,0 +1,104 @@
+[
+  {
+    "date": "2026-05-10",
+    "opponent": "ХК «Зауралье»",
+    "home": true,
+    "score": {
+      "us": 4,
+      "them": 3
+    },
+    "status": "past"
+  },
+  {
+    "date": "2026-05-17",
+    "opponent": "«Металлург»",
+    "home": false,
+    "score": {
+      "us": 2,
+      "them": 5
+    },
+    "status": "past"
+  },
+  {
+    "date": "2026-05-24",
+    "opponent": "«Динамо»",
+    "home": true,
+    "score": {
+      "us": 3,
+      "them": 2
+    },
+    "status": "past"
+  },
+  {
+    "date": "2026-06-04",
+    "opponent": "«Спартак»",
+    "home": false,
+    "score": {
+      "us": 1,
+      "them": 4
+    },
+    "status": "past"
+  },
+  {
+    "date": "2026-06-11",
+    "opponent": "«Торпедо»",
+    "home": true,
+    "score": {
+      "us": 5,
+      "them": 4
+    },
+    "status": "past"
+  },
+  {
+    "date": "2026-06-18",
+    "opponent": "ХК «Шахтёр»",
+    "home": false,
+    "score": {
+      "us": 3,
+      "them": 3
+    },
+    "status": "past"
+  },
+  {
+    "date": "2026-06-25",
+    "opponent": "«Автомобилист»",
+    "home": true,
+    "score": null,
+    "status": "upcoming"
+  },
+  {
+    "date": "2026-07-02",
+    "opponent": "«Трактор»",
+    "home": false,
+    "score": null,
+    "status": "upcoming"
+  },
+  {
+    "date": "2026-07-09",
+    "opponent": "«Салават Юлаев»",
+    "home": true,
+    "score": null,
+    "status": "upcoming"
+  },
+  {
+    "date": "2026-07-16",
+    "opponent": "«Ак Барс»",
+    "home": false,
+    "score": null,
+    "status": "upcoming"
+  },
+  {
+    "date": "2026-07-23",
+    "opponent": "ХК «Нефтяник»",
+    "home": true,
+    "score": null,
+    "status": "upcoming"
+  },
+  {
+    "date": "2026-07-30",
+    "opponent": "«Югра»",
+    "home": false,
+    "score": null,
+    "status": "upcoming"
+  }
+]

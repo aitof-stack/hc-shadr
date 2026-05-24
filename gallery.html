@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>ХК «ШАДР» — Галерея</title>
+	<link rel="shortcut icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<header id="header">
+		<div class="logo">
+			<img src="logo.png" alt="ХК ШАДР">
+			<div class="logo-text">ХК «ШАДР»<small>Шадринск</small></div>
+		</div>
+		<button class="menu-toggle" id="menuToggle" aria-label="Меню">☰</button>
+		<nav id="nav">
+			<a href="index.html">Главная</a>
+			<a href="team.html">Состав</a>
+			<a href="schedule.html">Расписание</a>
+			<a href="gallery.html" class="active">Галерея</a>
+			<a href="history.html">История</a>
+			<a href="news.html">Новости</a>
+			<a href="contacts.html">Контакты</a>
+		</nav>
+	</header>
+
+	<main>
+		<div class="page-hero">
+			<h1>Галерея</h1>
+			<p>Фото с матчей и тренировок</p>
+			<div class="line"></div>
+		</div>
+
+		<div class="gallery-section">
+			<div class="gallery-filters">
+				<button class="active" data-filter="all">Все</button>
+				<button data-filter="match">Матчи</button>
+				<button data-filter="training">Тренировки</button>
+				<button data-filter="team">Команда</button>
+			</div>
+			<div class="gallery-grid" id="galleryGrid"></div>
+		</div>
+
+		<div class="lightbox" id="lightbox">
+			<button class="close" id="lightboxClose">✕</button>
+			<img id="lightboxImg" src="" alt="">
+		</div>
+	</main>
+
+	<footer>
+		<div class="inner">
+			<div>
+				<h5>ХК «ШАДР»</h5>
+				<a href="index.html">Главная</a>
+				<a href="team.html">Состав</a>
+				<a href="schedule.html">Расписание</a>
+				<a href="gallery.html">Галерея</a>
+				<a href="history.html">История</a>
+				<a href="news.html">Новости</a>
+			</div>
+			<div>
+				<h5>Документы</h5>
+				<a href="#">Регламенты</a>
+				<a href="#">Заявки</a>
+				<a href="#">Протоколы</a>
+			</div>
+			<div class="contacts">
+				<h5>Контакты</h5>
+				<p>641800, г. Шадринск, ул. Спортивная, д. 1</p>
+				<p>+7 (35253) 3-45-67</p>
+				<p>info@hc-shadr.ru</p>
+			</div>
+		</div>
+		<div class="bottom">&copy; 2026 Хоккейный клуб «ШАДР»</div>
+	</footer>
+
+	<script>
+		const header = document.getElementById('header');
+		window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 80));
+		const toggle = document.getElementById('menuToggle');
+		const nav = document.getElementById('nav');
+		toggle.addEventListener('click', () => {
+			nav.classList.toggle('open');
+			toggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
+		});
+		nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.textContent = '☰'; }));
+
+		let galleryItems = [];
+
+		const grid = document.getElementById('galleryGrid');
+		const lightbox = document.getElementById('lightbox');
+		const lightboxImg = document.getElementById('lightboxImg');
+
+		function render(filter = 'all') {
+			const items = filter === 'all' ? galleryItems : galleryItems.filter(i => i.category === filter);
+			const colors = ['#222','#333','#444','#555','#2a2a2a','#3a2a1a','#1a2a3a','#2a1a3a'];
+			grid.innerHTML = items.map((item, idx) => {
+				if (item.src) {
+					return `
+						<div class="gallery-item ${item.className || ''}" data-category="${item.category}" data-idx="${idx}" onclick="openLightbox(this)">
+							<img src="${item.src}" alt="${item.label}" style="width:100%;height:100%;object-fit:cover">
+							<div class="label">${item.label}</div>
+						</div>
+					`;
+				}
+				const color = colors[idx % colors.length];
+				const initials = item.label.split(' ').slice(0, 3).map(w => w[0]).join('');
+				return `
+					<div class="gallery-item ${item.className || ''}" data-category="${item.category}" data-idx="${idx}" onclick="openLightbox(this)">
+						<svg width="100%" height="100%" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+							<rect width="400" height="300" fill="${color}"/>
+							<text x="200" y="140" text-anchor="middle" fill="rgba(255,255,255,.15)" font-size="60" font-weight="700" font-family="Exo_2-Bold">${initials}</text>
+							<text x="200" y="240" text-anchor="middle" fill="rgba(255,255,255,.08)" font-size="12" font-family="Exo_2">Фото ХК «ШАДР»</text>
+						</svg>
+						<div class="label">${item.label}</div>
+					</div>
+				`;
+			}).join('');
+		}
+
+		function openLightbox(el) {
+			const idx = el.dataset.idx;
+			const items = Array.from(grid.children);
+			const allItems = galleryItems;
+			const filter = document.querySelector('.gallery-filters .active');
+			const f = filter ? filter.dataset.filter : 'all';
+			const filtered = f === 'all' ? allItems : allItems.filter(i => i.category === f);
+			const item = filtered[idx];
+			if (!item) return;
+
+			if (item.src) {
+				lightboxImg.src = item.src;
+			} else {
+				const colors = ['#222','#333','#444','#555','#2a2a2a','#3a2a1a','#1a2a3a','#2a1a3a'];
+				const color = colors[idx % colors.length];
+				const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="${color}"/><text x="400" y="280" text-anchor="middle" fill="rgba(255,255,255,.12)" font-size="80" font-weight="700" font-family="Exo_2-Bold">${item.label}</text><text x="400" y="380" text-anchor="middle" fill="rgba(255,255,255,.08)" font-size="16" font-family="Exo_2">Фото ХК «ШАДР»</text></svg>`;
+				lightboxImg.src = 'data:image/svg+xml,' + encodeURIComponent(svg);
+			}
+			lightbox.classList.add('open');
+		}
+
+		document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('open'));
+		lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+		document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+
+		document.querySelector('.gallery-filters').addEventListener('click', e => {
+			const btn = e.target.closest('button');
+			if (!btn) return;
+			document.querySelectorAll('.gallery-filters button').forEach(b => b.classList.remove('active'));
+			btn.classList.add('active');
+			render(btn.dataset.filter);
+		});
+
+		async function init() {
+			galleryItems = await (await fetch('/api/gallery')).json();
+			render();
+		}
+		init();
+	</script>
+</body>
+</html>

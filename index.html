@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>ХК «ШАДР» — Главная</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<header id="header">
+		<div class="logo">
+			<img src="logo.png" alt="ХК ШАДР">
+			<div class="logo-text">ХК «ШАДР»<small>Шадринск</small></div>
+		</div>
+		<button class="menu-toggle" id="menuToggle" aria-label="Меню">☰</button>
+		<nav id="nav">
+			<a href="index.html" class="active">Главная</a>
+			<a href="team.html">Состав</a>
+			<a href="schedule.html">Расписание</a>
+			<a href="gallery.html">Галерея</a>
+			<a href="history.html">История</a>
+			<a href="news.html">Новости</a>
+			<a href="contacts.html">Контакты</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="hero">
+			<div class="hero-bg"></div>
+			<div class="hero-overlay"></div>
+			<div class="hero-content">
+				<div class="hero-badge">Курганская область</div>
+				<h1>ХК «ШАДР»<span>Шадринск • С 1965 года</span></h1>
+				<p>Один из старейших хоккейных клубов Зауралья</p>
+			</div>
+			<div class="scroll-down" onclick="document.getElementById('news').scrollIntoView()">Листайте вниз</div>
+		</section>
+
+		<section id="news" class="news-section">
+			<div class="section-title">
+				<h2>Новости</h2>
+				<p>Последние события из жизни клуба</p>
+				<div class="line"></div>
+			</div>
+			<div class="news-grid">
+				<div class="news-featured">
+					<div class="news-featured-bg"></div>
+					<div class="news-featured-body">
+						<div class="date">23 мая 2026</div>
+						<h3>«ШАДР» завершил сезон на втором месте!</h3>
+						<p>В финальной серии команда уступила «Зауралью», но показала лучший результат за последние 5 лет.</p>
+					</div>
+				</div>
+				<div class="news-list">
+					<div class="news-card"><div class="date">15 мая 2026</div><h4>Победа над «Далматово» 5:2</h4></div>
+					<div class="news-card"><div class="date">1 мая 2026</div><h4>Открыт набор в ДЮСШ «ШАДР»</h4></div>
+					<div class="news-card"><div class="date">20 апреля 2026</div><h4>«ШАДР» вышел в полуфинал Кубка ФХКО</h4></div>
+					<div class="news-card"><div class="date">10 апреля 2026</div><h4>Выездная победа над «Катайском»</h4></div>
+					<div class="news-card"><div class="date">28 марта 2026</div><h4>Турнир памяти легендарного тренера</h4></div>
+				</div>
+			</div>
+		</section>
+
+		<section id="about">
+			<div class="about-wrap">
+				<div>
+					<h2>О команде</h2>
+					<div class="line"></div>
+					<p>Хоккейный клуб «ШАДР» основан в 1965 году в городе Шадринске Курганской области. За более чем полувековую историю команда воспитала не одно поколение хоккеистов и является одной из самых титулованных в регионе.</p>
+					<p>Домашние матчи проводит на Ледовой арене «Шадр». Цвета клуба — чёрный и белый.</p>
+					<div class="about-stats">
+						<div><div class="num">59</div><div class="label">Сезонов</div></div>
+						<div><div class="num">8</div><div class="label">Титулов</div></div>
+						<div><div class="num">24</div><div class="label">Игроков</div></div>
+					</div>
+				</div>
+				<div class="about-photo">
+					<img src="team-photo.jpg" alt="ХК ШАДР">
+				</div>
+			</div>
+		</section>
+
+		<section class="cta-section">
+			<h2>Поддержи команду</h2>
+			<p>Следи за матчами, приходи на арену, болей за своих!</p>
+			<div class="cta-links">
+				<a href="schedule.html" class="primary">Расписание игр</a>
+				<a href="team.html" class="outline">Состав команды</a>
+			</div>
+		</section>
+
+		<section>
+			<div class="section-title">
+				<h2>Партнёры</h2>
+				<div class="line"></div>
+			</div>
+			<div class="partners-flex">
+				<a href="#" title="Администрация Шадринска">
+					<svg width="140" height="60"><rect width="140" height="60" rx="10" fill="#eee"/><text x="70" y="34" text-anchor="middle" fill="#999" font-size="11" font-family="Exo_2">Администрация</text><text x="70" y="48" text-anchor="middle" fill="#999" font-size="8" font-family="Exo_2">ШАДРИНСКА</text></svg>
+				</a>
+				<a href="#" title="Федерация хоккея Курганской области">
+					<svg width="140" height="60"><rect width="140" height="60" rx="10" fill="#eee"/><text x="70" y="34" text-anchor="middle" fill="#999" font-size="12" font-weight="bold" font-family="Exo_2">ФХКО</text><text x="70" y="48" text-anchor="middle" fill="#999" font-size="8" font-family="Exo_2">Федерация хоккея</text></svg>
+				</a>
+				<a href="#" title="Ночная Хоккейная Лига">
+					<svg width="140" height="60"><rect width="140" height="60" rx="10" fill="#eee"/><text x="70" y="34" text-anchor="middle" fill="#999" font-size="15" font-weight="bold" font-family="Exo_2">НХЛ</text><text x="70" y="48" text-anchor="middle" fill="#999" font-size="8" font-family="Exo_2">Ночная лига</text></svg>
+				</a>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="inner">
+			<div>
+				<h5>ХК «ШАДР»</h5>
+				<a href="index.html">Главная</a>
+				<a href="team.html">Состав</a>
+				<a href="schedule.html">Расписание</a>
+				<a href="gallery.html">Галерея</a>
+				<a href="history.html">История</a>
+				<a href="news.html">Новости</a>
+			</div>
+			<div>
+				<h5>Документы</h5>
+				<a href="#">Регламенты</a>
+				<a href="#">Заявки</a>
+				<a href="#">Протоколы</a>
+			</div>
+			<div class="contacts">
+				<h5>Контакты</h5>
+				<p>641800, г. Шадринск, ул. Спортивная, д. 1</p>
+				<p>+7 (35253) 3-45-67</p>
+				<p>info@hc-shadr.ru</p>
+			</div>
+		</div>
+		<div class="bottom">&copy; 2026 Хоккейный клуб «ШАДР»</div>
+	</footer>
+
+	<script>
+		const header = document.getElementById('header');
+		window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 80));
+		const toggle = document.getElementById('menuToggle');
+		const nav = document.getElementById('nav');
+		toggle.addEventListener('click', () => {
+			nav.classList.toggle('open');
+			toggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
+		});
+		nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.textContent = '☰'; }));
+	</script>
+</body>
+</html>

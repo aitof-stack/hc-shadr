@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>ХК «ШАДР» — Контакты</title>
+	<link rel="shortcut icon" href="favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<header id="header">
+		<div class="logo">
+			<img src="logo.png" alt="ХК ШАДР">
+			<div class="logo-text">ХК «ШАДР»<small>Шадринск</small></div>
+		</div>
+		<button class="menu-toggle" id="menuToggle" aria-label="Меню">☰</button>
+		<nav id="nav">
+			<a href="index.html">Главная</a>
+			<a href="team.html">Состав</a>
+			<a href="schedule.html">Расписание</a>
+			<a href="gallery.html">Галерея</a>
+			<a href="history.html">История</a>
+			<a href="news.html">Новости</a>
+			<a href="contacts.html" class="active">Контакты</a>
+		</nav>
+	</header>
+
+	<main>
+		<div class="page-hero">
+			<h1>Контакты</h1>
+			<p>Свяжитесь с нами</p>
+			<div class="line"></div>
+		</div>
+
+		<div class="contacts-wrap">
+			<div class="contact-info">
+				<h3>Связь с клубом</h3>
+				<div class="line"></div>
+				<div id="contactData"></div>
+			</div>
+
+			<div class="contact-form">
+				<h3>Напишите нам</h3>
+				<div class="line"></div>
+				<div class="form-success" id="formSuccess">✓ Сообщение отправлено!</div>
+				<form id="contactForm">
+					<div class="form-group">
+						<label>Ваше имя</label>
+						<input type="text" required>
+					</div>
+					<div class="form-group">
+						<label>Email</label>
+						<input type="email" required>
+					</div>
+					<div class="form-group">
+						<label>Тема</label>
+						<input type="text">
+					</div>
+					<div class="form-group">
+						<label>Сообщение</label>
+						<textarea required></textarea>
+					</div>
+					<button type="submit" class="form-submit">Отправить</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="map-section">
+			<h3>Как добраться</h3>
+			<div class="map-box">
+				<svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="background:#f4f4f4;">
+					<rect width="800" height="300" fill="#e8e8e8" rx="12"/>
+					<rect x="200" y="100" width="400" height="120" rx="8" fill="#d0d0d0" stroke="#bbb" stroke-width="1"/>
+					<text x="400" y="155" text-anchor="middle" fill="#666" font-size="14" font-family="Exo_2">Ледовая арена «Шадр»</text>
+					<text x="400" y="175" text-anchor="middle" fill="#888" font-size="11" font-family="Exo_2">ул. Спортивная, д. 1</text>
+					<text x="400" y="195" text-anchor="middle" fill="#888" font-size="11" font-family="Exo_2">г. Шадринск, Курганская обл.</text>
+					<circle cx="400" cy="140" r="6" fill="#c9a84c"/>
+					<path d="M40 270 L400 30 L760 270 Z" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4,4"/>
+					<text x="120" y="280" text-anchor="middle" fill="#999" font-size="9" font-family="Exo_2">ул. Ленина</text>
+					<text x="680" y="280" text-anchor="middle" fill="#999" font-size="9" font-family="Exo_2">ул. Карла Маркса</text>
+				</svg>
+			</div>
+		</div>
+	</main>
+
+	<footer>
+		<div class="inner">
+			<div>
+				<h5>ХК «ШАДР»</h5>
+				<a href="index.html">Главная</a>
+				<a href="team.html">Состав</a>
+				<a href="schedule.html">Расписание</a>
+				<a href="gallery.html">Галерея</a>
+				<a href="history.html">История</a>
+				<a href="news.html">Новости</a>
+			</div>
+			<div>
+				<h5>Документы</h5>
+				<a href="#">Регламенты</a>
+				<a href="#">Заявки</a>
+				<a href="#">Протоколы</a>
+			</div>
+			<div class="contacts">
+				<h5>Контакты</h5>
+				<p>641800, г. Шадринск, ул. Спортивная, д. 1</p>
+				<p>+7 (35253) 3-45-67</p>
+				<p>info@hc-shadr.ru</p>
+			</div>
+		</div>
+		<div class="bottom">&copy; 2026 Хоккейный клуб «ШАДР»</div>
+	</footer>
+
+	<script>
+		const header = document.getElementById('header');
+		window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 80));
+		const toggle = document.getElementById('menuToggle');
+		const nav = document.getElementById('nav');
+		toggle.addEventListener('click', () => {
+			nav.classList.toggle('open');
+			toggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
+		});
+		nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.textContent = '☰'; }));
+
+		document.getElementById('contactForm').addEventListener('submit', function(e) {
+			e.preventDefault();
+			document.getElementById('formSuccess').classList.add('show');
+			this.reset();
+		});
+
+		async function loadContacts() {
+			try {
+				const c = await (await fetch('/api/contacts')).json();
+				document.getElementById('contactData').innerHTML = `
+					<div class="contact-item">
+						<div class="contact-icon">📞</div>
+						<div><h4>Телефон</h4><p><a href="tel:${c.phone.replace(/[^+\d]/g,'')}">${c.phone}</a></p></div>
+					</div>
+					<div class="contact-item">
+						<div class="contact-icon">✉</div>
+						<div><h4>Email</h4><p><a href="mailto:${c.email}">${c.email}</a></p></div>
+					</div>
+					<div class="contact-item">
+						<div class="contact-icon">📍</div>
+						<div><h4>Адрес арены</h4><p>${c.address}<br>${c.arena}</p></div>
+					</div>
+					<div class="contact-item">
+						<div class="contact-icon">🕐</div>
+						<div><h4>Часы работы</h4><p>${c.hours}</p></div>
+					</div>
+					<div class="contact-item">
+						<div class="contact-icon">🌐</div>
+						<div><h4>Социальные сети</h4><p>
+							<a href="${c.socialVk}" target="_blank">ВКонтакте</a> •
+							<a href="${c.socialTg}" target="_blank">Telegram</a> •
+							<a href="${c.socialYt}" target="_blank">YouTube</a>
+						</p></div>
+					</div>`;
+			} catch(e) { document.getElementById('contactData').innerHTML = '<p>Ошибка загрузки</p>'; }
+		}
+		loadContacts();
+	</script>
+</body>
+</html>

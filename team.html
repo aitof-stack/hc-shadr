@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>ХК «ШАДР» — Состав</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+	<header id="header">
+		<div class="logo">
+			<img src="logo.png" alt="ХК ШАДР">
+			<div class="logo-text">ХК «ШАДР»<small>Шадринск</small></div>
+		</div>
+		<button class="menu-toggle" id="menuToggle" aria-label="Меню">☰</button>
+		<nav id="nav">
+			<a href="index.html">Главная</a>
+			<a href="team.html" class="active">Состав</a>
+			<a href="schedule.html">Расписание</a>
+			<a href="gallery.html">Галерея</a>
+			<a href="history.html">История</a>
+			<a href="news.html">Новости</a>
+			<a href="contacts.html">Контакты</a>
+		</nav>
+	</header>
+
+	<main>
+		<div class="page-hero">
+			<h1>Состав команды</h1>
+			<p>Сезон 2025/2026 • 24 игрока</p>
+			<div class="line"></div>
+		</div>
+
+		<div class="section">
+			<input type="radio" name="view" id="viewCards" hidden checked>
+			<input type="radio" name="view" id="viewTable" hidden>
+			<div class="filter-bar">
+				<div class="pos-tabs" id="posTabs">
+					<button class="active" data-filter="all">Все</button>
+					<button data-filter="Вр">Вратари</button>
+					<button data-filter="Защ">Защитники</button>
+					<button data-filter="Нап">Нападающие</button>
+				</div>
+				<div class="view-switcher">
+					<label for="viewCards">Карточки</label>
+					<label for="viewTable">Таблица</label>
+				</div>
+			</div>
+
+			<div class="cards-view" id="cardsView"></div>
+			<div class="table-view" id="tableView"></div>
+		</div>
+	</main>
+
+	<footer>
+		<div class="inner">
+			<div>
+				<h5>ХК «ШАДР»</h5>
+				<a href="index.html">Главная</a>
+				<a href="team.html">Состав</a>
+				<a href="schedule.html">Расписание</a>
+				<a href="gallery.html">Галерея</a>
+				<a href="history.html">История</a>
+				<a href="news.html">Новости</a>
+			</div>
+			<div>
+				<h5>Документы</h5>
+				<a href="#">Регламенты</a>
+				<a href="#">Заявки</a>
+				<a href="#">Протоколы</a>
+			</div>
+			<div class="contacts">
+				<h5>Контакты</h5>
+				<p>641800, г. Шадринск, ул. Спортивная, д. 1</p>
+				<p>+7 (35253) 3-45-67</p>
+				<p>info@hc-shadr.ru</p>
+			</div>
+		</div>
+		<div class="bottom">&copy; 2026 Хоккейный клуб «ШАДР»</div>
+	</footer>
+
+	<script>
+		const header = document.getElementById('header');
+		window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 80));
+		const toggle = document.getElementById('menuToggle');
+		const nav = document.getElementById('nav');
+		toggle.addEventListener('click', () => {
+			nav.classList.toggle('open');
+			toggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
+		});
+		nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.textContent = '☰'; }));
+
+		const posGroups = { Вр: 'Вратари', Защ: 'Защитники', Нап: 'Нападающие' };
+		const posLabels = { Вр: 'Вратарь', Защ: 'Защитник', Нап: 'Нападающий' };
+
+		let players = [];
+
+		const colors = ['#222','#333','#444','#555','#2a2a2a','#3a2a1a','#1a2a3a'];
+
+		function renderCards(filter) {
+			const groups = {};
+			const filtered = filter === 'all' ? players : players.filter(p => p.pos === filter);
+			filtered.forEach(p => { if (!groups[p.pos]) groups[p.pos] = []; groups[p.pos].push(p); });
+
+			let html = '';
+			const order = ['Вр','Защ','Нап'];
+			order.forEach(pos => {
+				if (!groups[pos]) return;
+				html += `<div class="position-group"><div class="group-title">${posGroups[pos]}</div><div class="roster-grid">`;
+				groups[pos].forEach((p, i) => {
+					const color = colors[i % colors.length];
+					const parts = p.name.split(' ');
+					const last = parts[0] || '';
+					const first = parts[1] || '';
+					const mid = parts[2] || '';
+					const face = p.photo
+						? `<img src="${p.photo}" alt="" style="display:block;width:100%;height:auto">`
+						: `<span style="font-size:3.5rem;font-weight:700;color:rgba(255,255,255,.06);font-family:var(--font-bold);">${last.charAt(0)}${first.charAt(0)}</span>`;
+					html += `
+						<div class="roster-item">
+							<div class="roster-item-info-wrapper">
+								<input type="checkbox" id="flip-${p.num}" class="flippy-check" hidden>
+								<div class="roster-item-info${p.photo ? ' has-photo' : ''}">
+									<div class="roster-item-front" style="background:${color};overflow:hidden;">
+										${face}
+										<div class="num-badge">${p.num}</div>
+									</div>
+									<div class="roster-item-back">
+										<span class="back-label">Дата заявки</span>
+										<span class="back-value">06.03.2025</span>
+									</div>
+								</div>
+								<label for="flip-${p.num}" style="position:absolute;inset:0;cursor:pointer;z-index:2"></label>
+							</div>
+							<div class="roster-item-main">
+								<span class="person-last-name">${last}</span>
+								<span class="person-first-name">${first}</span>
+								<span class="person-mid-name">${mid}</span>
+								<div class="person-post">${posLabels[p.pos]}</div>
+							</div>
+						</div>`;
+				});
+				html += '</div></div>';
+			});
+			document.getElementById('cardsView').innerHTML = html || '<p style="color:var(--gray);text-align:center;padding:40px 0">Нет игроков в выбранной категории</p>';
+		}
+
+		function renderTable(filter) {
+			const filtered = filter === 'all' ? players : players.filter(p => p.pos === filter);
+			const groups = {};
+			filtered.forEach(p => { if (!groups[p.pos]) groups[p.pos] = []; groups[p.pos].push(p); });
+			const order = ['Вр','Защ','Нап'];
+
+			let html = '<div class="table-wrap"><table><thead><tr><th>№</th><th>Игрок</th><th>Амплуа</th></tr></thead><tbody>';
+			order.forEach(pos => {
+				if (!groups[pos] || groups[pos].length === 0) return;
+				html += `<tr class="group-head"><td colspan="3">${posGroups[pos]}</td></tr>`;
+				groups[pos].forEach(p => {
+					html += `<tr><td>${p.num}</td><td class="sticky">${p.photo ? `<img src="${p.photo}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:8px">` : ''}${p.name}</td><td>${posLabels[p.pos]}</td></tr>`;
+				});
+			});
+			html += '</tbody></table></div><div class="note">* — дата обновления на сайте, может отличаться от фактической даты заявки игрока</div>';
+			document.getElementById('tableView').innerHTML = html || '<p style="color:var(--gray);text-align:center;padding:40px 0">Нет игроков в выбранной категории</p>';
+		}
+
+		let currentFilter = 'all';
+		function renderAll() { renderCards(currentFilter); renderTable(currentFilter); }
+
+		document.getElementById('posTabs').addEventListener('click', e => {
+			const btn = e.target.closest('button');
+			if (!btn) return;
+			document.querySelectorAll('#posTabs button').forEach(b => b.classList.remove('active'));
+			btn.classList.add('active');
+			currentFilter = btn.dataset.filter;
+			renderAll();
+		});
+
+		async function init() { players = await (await fetch('/api/players')).json(); renderAll(); }
+		init();
+	</script>
+</body>
+</html>
