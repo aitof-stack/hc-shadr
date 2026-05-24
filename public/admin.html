@@ -191,6 +191,20 @@
 			document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
 		});
 
+		// Global delete handler (delegation — no inline onclick)
+		const renderMap = { playersTable: renderPlayers, matchesTable: renderMatches, galleryTable: renderGallery, newsTable: renderNews, contactsTable: ()=>{} };
+		document.querySelector('.admin-content').addEventListener('click', e => {
+			const btn = e.target.closest('.btn-delete');
+			if (!btn) return;
+			const row = btn.closest('tr');
+			const i = parseInt(row.dataset.i);
+			const arr = window[btn.dataset.array];
+			if (!arr) return;
+			arr.splice(i, 1);
+			const tableId = row.closest('table').id;
+			if (renderMap[tableId]) renderMap[tableId]();
+		});
+
 		// ── PLAYERS ──
 		var players = [];
 		function esc(s) { return (s||'').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -198,7 +212,7 @@
 		function renderPlayers() {
 			const tbody = document.querySelector('#playersTable tbody');
 			tbody.innerHTML = players.map((p, i) => `
-				<tr>
+				<tr data-i="${i}">
 					<td><input type="number" value="${p.num}" onchange="players[${i}].num=+this.value" min="1" max="99"></td>
 					<td><input type="text" value="${esc(p.name)}" onchange="players[${i}].name=this.value"></td>
 					<td><select onchange="players[${i}].pos=this.value">
@@ -210,7 +224,7 @@
 						${p.photo ? `<img src="${esc(p.photo)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0">` : '<span style="color:#bbb;font-size:1.2rem">○</span>'}
 						<input type="file" accept="image/*" onchange="uploadPhoto(${i}, this)" style="font-size:.75rem;flex:1">
 					</td>
-					<td><button class="btn btn-red btn-sm" onclick="players.splice(${i},1);renderPlayers()">✕</button></td>
+					<td><button class="btn btn-red btn-sm btn-delete" data-array="players">✕</button></td>
 				</tr>`).join('');
 		}
 		async function uploadPhoto(i, input) {
@@ -250,7 +264,7 @@
 		function renderMatches() {
 			const tbody = document.querySelector('#matchesTable tbody');
 			tbody.innerHTML = matches.map((m, i) => `
-				<tr>
+				<tr data-i="${i}">
 					<td><input type="date" value="${m.date}" onchange="matches[${i}].date=this.value"></td>
 					<td><input type="text" value="${esc(m.opponent)}" onchange="matches[${i}].opponent=this.value"></td>
 					<td><select onchange="matches[${i}].home=this.value==='true'">
@@ -259,7 +273,7 @@
 					</select></td>
 					<td><input type="number" value="${m.score?.us??''}" placeholder="-" onchange="ensureScore(${i});matches[${i}].score.us=this.value?+this.value:null" style="width:60px"></td>
 					<td><input type="number" value="${m.score?.them??''}" placeholder="-" onchange="ensureScore(${i});matches[${i}].score.them=this.value?+this.value:null" style="width:60px"></td>
-					<td><button class="btn btn-red btn-sm" onclick="matches.splice(${i},1);renderMatches()">✕</button></td>
+					<td><button class="btn btn-red btn-sm btn-delete" data-array="matches">✕</button></td>
 				</tr>`).join('');
 		}
 		function ensureScore(i) { if (!matches[i].score) matches[i].score = { us: null, them: null }; }
@@ -285,7 +299,7 @@
 		function renderGallery() {
 			const tbody = document.querySelector('#galleryTable tbody');
 			tbody.innerHTML = gallery.map((g, i) => `
-				<tr>
+				<tr data-i="${i}">
 					<td><select onchange="gallery[${i}].category=this.value">
 						<option value="team" ${g.category==='team'?'selected':''}>Команда</option>
 						<option value="match" ${g.category==='match'?'selected':''}>Матчи</option>
@@ -293,7 +307,7 @@
 					</select></td>
 					<td><input type="text" value="${esc(g.label)}" onchange="gallery[${i}].label=this.value"></td>
 					<td>${g.src ? '✅' : '🔲'}</td>
-					<td><button class="btn btn-red btn-sm" onclick="gallery.splice(${i},1);renderGallery()">✕</button></td>
+					<td><button class="btn btn-red btn-sm btn-delete" data-array="gallery">✕</button></td>
 				</tr>`).join('');
 		}
 		function addGallery() {
@@ -314,11 +328,11 @@
 		function renderNews() {
 			const tbody = document.querySelector('#newsTable tbody');
 			tbody.innerHTML = news.map((n, i) => `
-				<tr>
+				<tr data-i="${i}">
 					<td><input type="date" value="${n.date}" onchange="news[${i}].date=this.value"></td>
 					<td><input type="text" value="${esc(n.title)}" onchange="news[${i}].title=this.value"></td>
 					<td><input type="text" value="${esc((n.content||'').slice(0,60))}${(n.content||'').length>60?'...':''}" onchange="news[${i}].content=this.value" placeholder="Текст..."></td>
-					<td><button class="btn btn-red btn-sm" onclick="news.splice(${i},1);renderNews()">✕</button></td>
+					<td><button class="btn btn-red btn-sm btn-delete" data-array="news">✕</button></td>
 				</tr>`).join('');
 		}
 		function addNews() {
