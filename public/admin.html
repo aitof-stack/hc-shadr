@@ -93,7 +93,7 @@
 					<button class="btn btn-green" onclick="addMatch()">+ Добавить</button>
 				</div>
 				<table class="admin-table" id="matchesTable">
-					<thead><tr><th>Дата</th><th>Соперник</th><th>Д/В</th><th>Счёт (мы)</th><th>Счёт (они)</th><th></th></tr></thead>
+					<thead><tr><th>Дата</th><th>Соперник</th><th>Д/В</th><th>Счёт (мы)</th><th>Счёт (они)</th><th>Тип</th><th></th></tr></thead>
 					<tbody></tbody>
 				</table>
 				<div class="toolbar">
@@ -273,6 +273,11 @@
 					</select></td>
 					<td><input type="number" value="${m.score?.us??''}" placeholder="-" onchange="ensureScore(${i});matches[${i}].score.us=this.value?+this.value:null" style="width:60px"></td>
 					<td><input type="number" value="${m.score?.them??''}" placeholder="-" onchange="ensureScore(${i});matches[${i}].score.them=this.value?+this.value:null" style="width:60px"></td>
+					<td><select onchange="matches[${i}].winType=this.value">
+						<option value="reg" ${!m.winType||m.winType==='reg'?'selected':''}>Осн.</option>
+						<option value="ot" ${m.winType==='ot'?'selected':''}>ОТ</option>
+						<option value="so" ${m.winType==='so'?'selected':''}>Бул.</option>
+					</select></td>
 					<td><button class="btn btn-red btn-sm btn-delete" data-array="matches">✕</button></td>
 				</tr>`).join('');
 		}
@@ -282,13 +287,20 @@
 			const opponent = document.getElementById('mOpponent').value.trim();
 			const home = document.getElementById('mHome').value === 'true';
 			if (!date || !opponent) return showToast('Заполните дату и соперника', true);
-			matches.push({ date, opponent, home, score: null, status: 'upcoming' });
+			matches.push({ date, opponent, home, score: { us: null, them: null }, status: 'upcoming', winType: 'reg' });
 			renderMatches();
 			document.getElementById('mDate').value = ''; document.getElementById('mOpponent').value = '';
 			showToast('Матч добавлен');
 		}
 		async function saveMatches() {
-			matches.forEach(m => { m.status = m.score && m.score.us != null ? 'past' : 'upcoming'; });
+			matches.forEach(m => {
+				if (m.score && m.score.us != null) {
+					m.status = m.score.us > m.score.them ? 'win' : 'lose';
+					if (!m.winType) m.winType = 'reg';
+				} else {
+					m.status = 'upcoming';
+				}
+			});
 			await API.post('/api/matches', matches);
 			showToast('Расписание сохранено!');
 		}

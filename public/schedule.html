@@ -152,8 +152,8 @@
 				if (matchMap[key]) {
 					const m = matchMap[key][0];
 					const scoreEl = document.createElement('span');
-					scoreEl.className = 'cal-day-score ' + m.status;
-					scoreEl.textContent = m.score && m.score.us != null ? (m.score.us + ':' + m.score.them) : '— : —';
+					scoreEl.className = 'cal-day-score ' + (m.status === 'win' ? 'win' : m.status === 'lose' ? 'lose' : 'upcoming');
+					scoreEl.textContent = m.score && m.score.us != null ? (m.score.us + ':' + m.score.them + (m.winType&&m.winType!=='reg'?' '+{ot:'(ОТ)',so:'(бул.)'}[m.winType]:'')) : '— : —';
 					div.appendChild(scoreEl);
 
 					const iconEl = document.createElement('span');
@@ -193,13 +193,14 @@
 				return;
 			}
 
+			const winTypeLabel = {ot:'(ОТ)', so:'(бул.)'};
 			const statusLabels = { win: 'Победа', lose: 'Поражение', upcoming: 'Ожидается' };
 			list.innerHTML = dayMatches.map(m => {
 				const dd = m.date.getDate();
 				const mm = getMonthNameGen(m.date.getMonth()).slice(0, 3);
 				const homeStr = m.home ? 'ШАДР' : '«' + m.opponent + '»';
 				const awayStr = m.home ? '«' + m.opponent + '»' : 'ШАДР';
-				const scoreStr = m.score && m.score.us != null ? m.score.us + ':' + m.score.them : null;
+				const scoreStr = m.score && m.score.us != null ? m.score.us + ':' + m.score.them + (m.winType&&m.winType!=='reg'?' '+winTypeLabel[m.winType]:'') : null;
 				const scoreHTML = scoreStr
 					? `<div class="score"><span class="${m.status === 'win' ? 'win' : 'lose'}">${scoreStr}</span></div>`
 					: '<div class="score"><span class="upcoming">— : —</span></div>';
