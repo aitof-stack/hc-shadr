@@ -274,7 +274,15 @@
 			fileInput.value = '';
 			showToast('Игрок добавлен');
 		}
-		async function savePlayers() { await API.post('/api/players', players); showToast('Состав сохранён!'); }
+		async function savePlayers() {
+			try {
+				const r = await fetch('/api/players', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(players) });
+				if (!r.ok) throw new Error('Ошибка сервера');
+				players = await (await fetch('/api/players')).json();
+				renderPlayers();
+				showToast('Состав сохранён!');
+			} catch(e) { showToast('Ошибка сохранения: '+e.message, true); }
+		}
 
 		// ── MATCHES ──
 		var matches = [];
@@ -319,8 +327,13 @@
 					m.status = 'upcoming';
 				}
 			});
-			await API.post('/api/matches', matches);
-			showToast('Расписание сохранено!');
+			try {
+				const r = await fetch('/api/matches', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(matches) });
+				if (!r.ok) throw new Error('Ошибка сервера');
+				matches = await (await fetch('/api/matches')).json();
+				renderMatches();
+				showToast('Расписание сохранено!');
+			} catch(e) { showToast('Ошибка сохранения: '+e.message, true); }
 		}
 
 		// ── GALLERY ──
