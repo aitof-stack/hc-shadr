@@ -151,11 +151,6 @@
 
 				if (matchMap[key]) {
 					const m = matchMap[key][0];
-					const scoreEl = document.createElement('span');
-					scoreEl.className = 'cal-day-score ' + (m.status === 'win' ? 'win' : m.status === 'lose' ? 'lose' : 'upcoming');
-					scoreEl.textContent = m.score && m.score.us != null ? (m.score.us + ':' + m.score.them + (m.winType&&m.winType!=='reg'?' '+{ot:'(ОТ)',so:'(бул.)'}[m.winType]:'')) : '— : —';
-					div.appendChild(scoreEl);
-
 					const iconEl = document.createElement('span');
 					iconEl.className = 'cal-day-icon';
 					iconEl.textContent = m.home ? '🏠' : '✈';

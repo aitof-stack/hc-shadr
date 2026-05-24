@@ -289,12 +289,7 @@ section { padding: 90px 5%; }
 .cal-day.other { opacity: .2; pointer-events: none; }
 .cal-day.today { font-weight: 700; border-color: var(--gold); border-width: 2px; }
 .cal-day.active { background: var(--gold); color: var(--black); font-weight: 700; }
-.cal-day.active .cal-day-score { color: var(--black); }
-.cal-day .cal-day-num { font-weight: 600; line-height: 1; }
-.cal-day .cal-day-score { font-size: .68rem; font-weight: 700; line-height: 1; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
-.cal-day .cal-day-score.win { color: #2e7d32; }
-.cal-day .cal-day-score.lose { color: #c62828; }
-.cal-day .cal-day-score.upcoming { color: var(--gold); font-size: .6rem; }
+
 .cal-day .cal-day-icon { font-size: .6rem; line-height: 1; opacity: .5; }
 
 /* MATCH LIST */
