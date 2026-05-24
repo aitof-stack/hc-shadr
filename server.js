@@ -63,20 +63,7 @@ const defaults = {
     {num:21,name:'Чухманов Максим',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},{num:31,name:'Колотыгин Алексей',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},
     {num:49,name:'Сидорин Кирилл',pos:'Нап',birthdate:'',grip:'',height:'',weight:''}
   ],
-  'matches.json': [
-    {date:'2026-06-01',opponent:'Далматово',home:true,score:{us:5,them:2},status:'win',winType:'reg'},
-    {date:'2026-06-10',opponent:'Катайск',home:false,score:{us:4,them:3},status:'win',winType:'reg'},
-    {date:'2026-06-15',opponent:'Зауралье',home:true,score:{us:2,them:3},status:'lose',winType:'reg'},
-    {date:'2026-06-20',opponent:'Курган',home:false,score:{us:3,them:1},status:'win',winType:'reg'},
-    {date:'2026-06-23',opponent:'Далматово',home:true,score:{us:1,them:4},status:'lose',winType:'reg'},
-    {date:'2026-07-03',opponent:'Катайск',home:true,score:null,status:'upcoming'},
-    {date:'2026-07-10',opponent:'Зауралье',home:false,score:null,status:'upcoming'},
-    {date:'2026-07-17',opponent:'Курган',home:true,score:null,status:'upcoming'},
-    {date:'2026-07-24',opponent:'Далматово',home:false,score:null,status:'upcoming'},
-    {date:'2026-08-01',opponent:'Зауралье',home:true,score:null,status:'upcoming'},
-    {date:'2026-08-08',opponent:'Катайск',home:false,score:null,status:'upcoming'},
-    {date:'2026-08-15',opponent:'Курган',home:true,score:null,status:'upcoming'}
-  ],
+  'matches.json': [],
   'gallery.json': [
     {category:'team',label:'Командное фото 2026',className:'wide',src:'https://downloader.disk.yandex.ru/preview/323aa9ba0d2bf1b569cd6fc6d01bb74ce3efbaddd20cbcce7cdda360708be25e/6a121e22/F8GrUs-1Nj38uUqyAVRcbvaSfKZzaB8R24XIj9ix1ATf1hoaFXB1IBQgPbZdHZ2IJ0zvTOAbo5ENHT4klvy3wg%3D%3D?uid=0&filename=otS58YAqtcWtSm3VoVarOG--ImYJvWwUCHuxQywUHkO0qi7Mps8zRcpRkSW_KKMKUgJbn35D5kCqPCobf9AIz_M_.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&is_direct_zip_experiment=1&size=2048x2048'},
     {category:'match',label:'Матч с Зауральем'},
