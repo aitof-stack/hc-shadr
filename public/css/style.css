@@ -1,7 +1,6 @@
 /* FONTS */
-@font-face { font-family: "Exo_2"; src: url("https://фхсо.рф/sport/static/fonts/Exo2-Regular.woff2") format("woff2"); font-style: normal; }
-@font-face { font-family: "Exo_2-Bold"; src: url("https://фхсо.рф/sport/static/fonts/Exo2-Bold.woff2") format("woff2"); font-style: normal; }
-@font-face { font-family: "icons"; src: url("https://фхсо.рф/sport/static/fonts/fa-solid-900.woff") format("woff"); font-weight: normal; }
+@font-face { font-family: "Exo_2"; src: url("../fonts/Exo2-Regular.woff2") format("woff2"); font-style: normal; }
+@font-face { font-family: "Exo_2-Bold"; src: url("../fonts/Exo2-Bold.woff2") format("woff2"); font-style: normal; }
 
 /* VARIABLES */
 :root {
@@ -388,7 +387,7 @@ section { padding: 90px 5%; }
 .contact-icon {
 	width: 44px; height: 44px; border-radius: 12px; background: var(--gold-light);
 	display: flex; align-items: center; justify-content: center;
-	font-family: "icons"; color: var(--gold); font-size: 1.1rem;
+	font-family: var(--font); color: var(--gold); font-size: 1.1rem;
 	flex-shrink: 0;
 }
 .contact-item h4 { font-family: var(--font-bold); font-size: .95rem; margin-bottom: 4px; }
