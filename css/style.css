@@ -461,29 +461,62 @@ footer .bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 20px; bord
 	.contacts-wrap { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-	header { height: 130px; }
+	header { height: 130px; padding: 0 16px; }
 	header.scrolled { height: 110px; }
 	.logo img { height: 100px; }
 	header.scrolled .logo img { height: 80px; }
-	.hero { padding-top: 130px; }
+	.hero { padding-top: 130px; min-height: 500px; }
+	.hero-content { bottom: 30px; left: 20px; right: 20px; }
+	.hero h1 { font-size: clamp(1.6rem,6vw,2.4rem); }
+	.hero p { font-size: .85rem; }
 	.menu-toggle { display: block; }
 	nav {
 		position: fixed; top: 130px; left: 0; right: 0;
 		flex-direction: column; background: rgba(10,10,10,.98); padding: 20px; gap: 16px;
 		transform: translateY(-120%); transition: .3s;
-		border-bottom: 1px solid rgba(255,255,255,.06);
+		border-bottom: 1px solid rgba(255,255,255,.06); z-index: 10;
 	}
 	nav.open { transform: translateY(0); }
 	nav a { font-size: 1rem; }
 	section { padding: 60px 5%; }
 	.section-title h2 { font-size: 1.6rem; }
 	.section { padding: 40px 5%; }
-	.roster-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+	.roster-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+	.roster-item-main { padding: 10px 10px 12px; }
+	.roster-item-main .person-last-name { font-size: .85rem; }
+	.roster-item-main .person-first-name, .roster-item-main .person-mid-name { font-size: .78rem; }
 	.view-switcher { margin-left: 0; width: 100%; }
 	.view-switcher label { flex: 1; text-align: center; }
 	.filter-bar { flex-direction: column; align-items: stretch; }
-	.match-card { flex-direction: column; text-align: center; padding: 16px; }
+	.table-view table { font-size: .78rem; }
+	.table-view th, .table-view td { padding: 7px 6px; }
+	.schedule-wrap { padding: 0 5%; }
+	.match-card { flex-direction: column; text-align: center; padding: 14px; }
 	.match-date { min-width: auto; display: flex; gap: 6px; align-items: baseline; }
+	.match-teams .score { font-size: 1.2rem; }
 	.gallery-grid { grid-template-columns: 1fr; }
-	.contact-form { padding: 24px; }
+	.contact-form { padding: 20px; }
+	.history-section { padding: 0 5%; }
+	.history-section article { padding: 20px; }
+	.history-section h1 { font-size: 1.5rem; }
+	.calendar { width: 100%; max-width: 100%; }
+	.calendar table { width: 100%; }
+	.calendar th, .calendar td { font-size: .8rem; }
+	footer .inner { flex-direction: column; gap: 24px; padding: 0 5%; }
+	footer .inner > div { width: 100%; }
+	.page-hero { padding: 40px 5% 20px; }
+	.page-hero h1 { font-size: 1.5rem; }
+	.form-group input, .form-group textarea { font-size: 16px; }
+}
+@media (max-width: 480px) {
+	.roster-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+	.roster-item-main { padding: 8px 8px 10px; }
+	.roster-item-main .person-last-name { font-size: .78rem; }
+	.roster-item-main .person-post { font-size: .65rem; padding: 2px 8px; }
+	.hero-content { bottom: 20px; left: 16px; right: 16px; }
+	.hero h1 { font-size: clamp(1.3rem,5vw,1.8rem); }
+	.hero p { font-size: .8rem; }
+	.hero-badge { font-size: .65rem; padding: 4px 12px; }
+	.section { padding: 24px 4%; }
+	.gallery-grid { gap: 6px; }
 }
