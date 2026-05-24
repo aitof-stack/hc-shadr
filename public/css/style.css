@@ -292,6 +292,29 @@ section { padding: 90px 5%; }
 
 .cal-day .cal-day-icon { font-size: .6rem; line-height: 1; opacity: .5; }
 
+/* MATCH DETAIL */
+.match-detail { flex: 1; min-width: 280px; }
+.match-detail-placeholder { color: var(--gray); text-align: center; padding: 40px 20px; font-size: .9rem; }
+.match-detail-card {
+	background: var(--white); border-radius: 14px; padding: 20px 24px;
+	box-shadow: 0 2px 12px rgba(0,0,0,.04); border: 1px solid #eee;
+	text-align: center; margin-bottom: 12px;
+}
+.match-detail-card .md-date { font-size: .8rem; color: var(--gray); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.match-detail-card .md-teams { font-family: var(--font-bold); font-size: 1.1rem; margin-bottom: 8px; }
+.match-detail-card .md-score { font-family: var(--font-bold); font-size: 2rem; margin-bottom: 6px; }
+.match-detail-card .md-score.win { color: #2e7d32; }
+.match-detail-card .md-score.lose { color: #c62828; }
+.match-detail-card .md-score.upcoming { color: var(--gray); }
+.match-detail-card .md-place { font-size: .8rem; color: var(--gray); margin-bottom: 6px; }
+.match-detail-card .md-status {
+	display: inline-block; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
+	padding: 4px 14px; border-radius: 50px;
+}
+.match-detail-card .md-status.win { background: #e8f5e9; color: #2e7d32; }
+.match-detail-card .md-status.lose { background: #ffebee; color: #c62828; }
+.match-detail-card .md-status.upcoming { background: var(--gold-light); color: #856f28; }
+
 /* (match list removed) */
 
 /* GALLERY */

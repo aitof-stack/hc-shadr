@@ -47,6 +47,9 @@
 					<span>✈ — В гостях</span>
 				</div>
 			</div>
+			<div class="match-detail" id="matchDetail">
+				<div class="match-detail-placeholder">Выберите дату в календаре</div>
+			</div>
 		</div>
 	</main>
 
@@ -153,10 +156,38 @@
 				div.addEventListener('click', () => {
 					selectedDate = date;
 					renderCalendar();
-					renderMatches();
+					renderMatchDetail();
 				});
 				daysEl.appendChild(div);
 			}
+		}
+
+		function renderMatchDetail() {
+			const el = document.getElementById('matchDetail');
+			if (!selectedDate) { el.innerHTML = '<div class="match-detail-placeholder">Выберите дату в календаре</div>'; return; }
+			const key = getDateKey(selectedDate);
+			const dayMatches = matchMap[key];
+			if (!dayMatches || !dayMatches.length) {
+				el.innerHTML = '<div class="match-detail-placeholder">В этот день матчей нет</div>';
+				return;
+			}
+			const winTypeLabel = {ot:'(ОТ)', so:'(бул.)'};
+			const statusLabels = { win: 'Победа', lose: 'Поражение', upcoming: 'Ожидается' };
+			el.innerHTML = dayMatches.map(m => {
+				const dd = m.date.getDate();
+				const mm = getMonthNameGen(m.date.getMonth());
+				const homeStr = m.home ? 'ШАДР' : '«' + m.opponent + '»';
+				const awayStr = m.home ? '«' + m.opponent + '»' : 'ШАДР';
+				const scoreStr = m.score && m.score.us != null ? m.score.us + ':' + m.score.them + (m.winType&&m.winType!=='reg'?' '+winTypeLabel[m.winType]:'') : null;
+				const place = m.home ? 'Ледовая арена «Шадр»' : 'г. ' + m.opponent;
+				return '<div class="match-detail-card">' +
+					'<div class="md-date">'+dd+' '+mm+'</div>' +
+					'<div class="md-teams">'+homeStr+' — '+awayStr+'</div>' +
+					(scoreStr ? '<div class="md-score '+m.status+'">'+scoreStr+'</div>' : '<div class="md-score upcoming">— : —</div>') +
+					'<div class="md-place">'+place+'</div>' +
+					'<div class="md-status '+m.status+'">'+statusLabels[m.status]+'</div>' +
+				'</div>';
+			}).join('');
 		}
 
 		document.getElementById('prevMonth').addEventListener('click', () => {
@@ -164,18 +195,21 @@
 			if (currentMonth < 0) { currentMonth = 11; currentYear--; }
 			selectedDate = null;
 			renderCalendar();
+			renderMatchDetail();
 		});
 		document.getElementById('nextMonth').addEventListener('click', () => {
 			currentMonth++;
 			if (currentMonth > 11) { currentMonth = 0; currentYear++; }
 			selectedDate = null;
 			renderCalendar();
+			renderMatchDetail();
 		});
 
 		async function init() {
 			matches = await (await fetch('/api/matches')).json();
 			buildMatchMap();
 			renderCalendar();
+			renderMatchDetail();
 		}
 		init();
 	</script>

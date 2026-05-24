@@ -42,22 +42,7 @@
 				<p>Последние события из жизни клуба</p>
 				<div class="line"></div>
 			</div>
-			<div class="news-grid">
-				<div class="news-featured">
-					<div class="news-featured-bg"></div>
-					<div class="news-featured-body">
-						<div class="date">23 мая 2026</div>
-						<h3>«ШАДР» завершил сезон на втором месте!</h3>
-						<p>В финальной серии команда уступила «Зауралью», но показала лучший результат за последние 5 лет.</p>
-					</div>
-				</div>
-				<div class="news-list">
-					<div class="news-card"><div class="date">15 мая 2026</div><h4>Победа над «Далматово» 5:2</h4></div>
-					<div class="news-card"><div class="date">1 мая 2026</div><h4>Открыт набор в ДЮСШ «ШАДР»</h4></div>
-					<div class="news-card"><div class="date">20 апреля 2026</div><h4>«ШАДР» вышел в полуфинал Кубка ФХКО</h4></div>
-					<div class="news-card"><div class="date">10 апреля 2026</div><h4>Выездная победа над «Катайском»</h4></div>
-					<div class="news-card"><div class="date">28 марта 2026</div><h4>Турнир памяти легендарного тренера</h4></div>
-				</div>
+			<div class="news-grid" id="newsGrid">
 			</div>
 		</section>
 
@@ -75,7 +60,7 @@
 					</div>
 				</div>
 				<div class="about-photo">
-					<img src="team-photo.jpg" alt="ХК ШАДР">
+					<img src="images/team-photo.jpg" alt="ХК ШАДР">
 				</div>
 			</div>
 		</section>
@@ -145,6 +130,26 @@
 			toggle.textContent = nav.classList.contains('open') ? '✕' : '☰';
 		});
 		nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.textContent = '☰'; }));
+
+		fetch('/api/news').then(r=>r.json()).then(news=>{
+			const grid = document.getElementById('newsGrid');
+			if (!news.length) { grid.innerHTML = '<p style="color:var(--gray);text-align:center;grid-column:1/-1;padding:40px 0">Новостей пока нет</p>'; return; }
+			const featured = news[0];
+			const rest = news.slice(1,5);
+			grid.innerHTML = `
+				<div class="news-featured">
+					<div class="news-featured-bg"></div>
+					<div class="news-featured-body">
+						<div class="date">${featured.date.split('-').reverse().join('.')}</div>
+						<h3>${featured.title}</h3>
+						<p>${featured.text}</p>
+					</div>
+				</div>
+				<div class="news-list">
+					${rest.map(n => `<div class="news-card"><div class="date">${n.date.split('-').reverse().join('.')}</div><h4>${n.title}</h4></div>`).join('')}
+				</div>
+			`;
+		});
 	</script>
 </body>
 </html>
