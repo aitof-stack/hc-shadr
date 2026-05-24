@@ -192,7 +192,7 @@
 		});
 
 		// ── PLAYERS ──
-		let players = [];
+		var players = [];
 		function esc(s) { return (s||'').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 		async function loadPlayers() { players = await API.get('/api/players'); renderPlayers(); }
 		function renderPlayers() {
@@ -245,7 +245,7 @@
 		async function savePlayers() { await API.post('/api/players', players); showToast('Состав сохранён!'); }
 
 		// ── MATCHES ──
-		let matches = [];
+		var matches = [];
 		async function loadMatches() { matches = await API.get('/api/matches'); renderMatches(); }
 		function renderMatches() {
 			const tbody = document.querySelector('#matchesTable tbody');
@@ -280,7 +280,7 @@
 		}
 
 		// ── GALLERY ──
-		let gallery = [];
+		var gallery = [];
 		async function loadGallery() { gallery = await API.get('/api/gallery'); renderGallery(); }
 		function renderGallery() {
 			const tbody = document.querySelector('#galleryTable tbody');
@@ -309,7 +309,7 @@
 		async function saveGallery() { await API.post('/api/gallery', gallery); showToast('Галерея сохранена!'); }
 
 		// ── NEWS ──
-		let news = [];
+		var news = [];
 		async function loadNews() { news = await API.get('/api/news'); renderNews(); }
 		function renderNews() {
 			const tbody = document.querySelector('#newsTable tbody');
@@ -337,7 +337,7 @@
 		async function saveNews() { await API.post('/api/news', news); showToast('Новости сохранены!'); }
 
 		// ── CONTACTS ──
-		let contacts = {};
+		var contacts = {};
 		async function loadContacts() {
 			contacts = await API.get('/api/contacts');
 			document.getElementById('cAddress').value = contacts.address || '';
