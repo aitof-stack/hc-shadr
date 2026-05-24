@@ -49,19 +49,19 @@ const dataDir = path.join(__dirname, 'data');
 // Default data for fresh deployment
 const defaults = {
   'players.json': [
-    {num:1,name:'Устинов Семён',pos:'Вр'},{num:30,name:'Распопов Денис',pos:'Вр'},
-    {num:2,name:'Эрленбуш Илья',pos:'Защ'},{num:5,name:'Колотыгин Андрей',pos:'Защ'},
-    {num:9,name:'Аитов Михаил',pos:'Защ'},{num:12,name:'Суковатицын Матвей',pos:'Защ'},
-    {num:13,name:'Бабкин Вадим',pos:'Защ'},{num:18,name:'Ибрагимов Дамир',pos:'Защ'},
-    {num:19,name:'Тарасов Александр',pos:'Защ'},{num:23,name:'Некрасов Андрей',pos:'Защ'},
-    {num:34,name:'Суханов Никита',pos:'Защ'},
-    {num:3,name:'Бушманов Игорь',pos:'Нап'},{num:4,name:'Коркин Семён',pos:'Нап'},
-    {num:6,name:'Эрленбуш Арсений',pos:'Нап'},{num:7,name:'Сидорин Егор',pos:'Нап'},
-    {num:8,name:'Распопов Дмитрий',pos:'Нап'},{num:10,name:'Бушманов Дмитрий',pos:'Нап'},
-    {num:11,name:'Дмитриев Семён',pos:'Нап'},{num:14,name:'Фомин Андрей',pos:'Нап'},
-    {num:15,name:'Симахин Арсений',pos:'Нап'},{num:17,name:'Чукреев Остап',pos:'Нап'},
-    {num:21,name:'Чухманов Максим',pos:'Нап'},{num:31,name:'Колотыгин Алексей',pos:'Нап'},
-    {num:49,name:'Сидорин Кирилл',pos:'Нап'}
+    {num:1,name:'Устинов Семён',pos:'Вр',birthdate:'',grip:'',height:'',weight:''},{num:30,name:'Распопов Денис',pos:'Вр',birthdate:'',grip:'',height:'',weight:''},
+    {num:2,name:'Эрленбуш Илья',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},{num:5,name:'Колотыгин Андрей',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},
+    {num:9,name:'Аитов Михаил',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},{num:12,name:'Суковатицын Матвей',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},
+    {num:13,name:'Бабкин Вадим',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},{num:18,name:'Ибрагимов Дамир',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},
+    {num:19,name:'Тарасов Александр',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},{num:23,name:'Некрасов Андрей',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},
+    {num:34,name:'Суханов Никита',pos:'Защ',birthdate:'',grip:'',height:'',weight:''},
+    {num:3,name:'Бушманов Игорь',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},{num:4,name:'Коркин Семён',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},
+    {num:6,name:'Эрленбуш Арсений',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},{num:7,name:'Сидорин Егор',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},
+    {num:8,name:'Распопов Дмитрий',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},{num:10,name:'Бушманов Дмитрий',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},
+    {num:11,name:'Дмитриев Семён',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},{num:14,name:'Фомин Андрей',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},
+    {num:15,name:'Симахин Арсений',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},{num:17,name:'Чукреев Остап',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},
+    {num:21,name:'Чухманов Максим',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},{num:31,name:'Колотыгин Алексей',pos:'Нап',birthdate:'',grip:'',height:'',weight:''},
+    {num:49,name:'Сидорин Кирилл',pos:'Нап',birthdate:'',grip:'',height:'',weight:''}
   ],
   'matches.json': [
     {date:'2026-06-01',opponent:'Далматово',home:true,score:{us:5,them:2},status:'win',winType:'reg'},

@@ -113,10 +113,12 @@
 					const parts = p.name.split(' ');
 					const last = parts[0] || '';
 					const first = parts[1] || '';
-					const mid = parts[2] || '';
+					const mid = parts.slice(2).join(' ') || '';
 					const bgStyle = p.photo
 						? `background-image:url(${p.photo})`
 						: `background:${color}`;
+					const gripLabel = {left:'Левый', right:'Правый'};
+					const fmtDate = p.birthdate ? p.birthdate.split('-').reverse().join('.') : '';
 					html += `
 						<div class="roster-item">
 							<div class="roster-item-info-wrapper flippy">
@@ -127,17 +129,18 @@
 										<div class="num-badge">${p.num}</div>
 									</div>
 									<div class="roster-item-back">
-										<label for="flip-${p.num}" class="icon close-back"></label>
-										<div class="back-row"><span class="back-label">Дата заявки</span><span class="back-value">06.03.2025</span></div>
+										<label for="flip-${p.num}" class="icon close-back">✕</label>
+										${fmtDate ? '<div class="back-row"><span class="back-label">Дата рождения</span><span class="back-value">'+fmtDate+'</span></div>' : ''}
+										${p.grip ? '<div class="back-row"><span class="back-label">Хват клюшки</span><span class="back-value">'+gripLabel[p.grip]+'</span></div>' : ''}
+										${p.height ? '<div class="back-row"><span class="back-label">Рост</span><span class="back-value">'+p.height+' см</span></div>' : ''}
+										${p.weight ? '<div class="back-row"><span class="back-label">Вес</span><span class="back-value">'+p.weight+' кг</span></div>' : ''}
 									</div>
 								</div>
 							</div>
 							<div class="roster-item-main">
-								<a href="#">
-									<span class="person-last-name">${last}</span>
-									<span class="person-first-name">${first}</span>
-									<span class="person-mid-name">${mid}</span>
-								</a>
+								<span class="person-last-name">${last}</span>
+								<span class="person-full-name">${first} ${mid}</span>
+								${fmtDate ? '<span class="person-birthdate">'+fmtDate+'</span>' : ''}
 								<p class="person-post">${posLabels[p.pos]}</p>
 							</div>
 						</div>`;

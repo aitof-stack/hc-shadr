@@ -70,10 +70,14 @@
 					<input type="text" id="pName" placeholder="Фамилия Имя">
 					<select id="pPos"><option value="Вр">Вратарь</option><option value="Защ">Защитник</option><option value="Нап" selected>Нападающий</option></select>
 					<input type="file" id="pPhotoFile" accept="image/*" style="padding:4px">
+					<input type="date" id="pBirthdate" placeholder="Дата рождения">
+					<select id="pGrip"><option value="">Хват</option><option value="left">Левый</option><option value="right">Правый</option></select>
+					<input type="number" id="pHeight" placeholder="Рост, см" min="100" max="220">
+					<input type="number" id="pWeight" placeholder="Вес, кг" min="20" max="150">
 					<button class="btn btn-green" onclick="addPlayer()">+ Добавить</button>
 				</div>
 				<table class="admin-table" id="playersTable">
-					<thead><tr><th>№</th><th>Игрок</th><th>Амплуа</th><th>Фото</th><th></th></tr></thead>
+					<thead><tr><th>№</th><th>Игрок</th><th>Амплуа</th><th>Дата рожд.</th><th>Хват</th><th>Рост</th><th>Вес</th><th>Фото</th><th></th></tr></thead>
 					<tbody></tbody>
 				</table>
 				<div class="toolbar">
@@ -213,13 +217,21 @@
 			const tbody = document.querySelector('#playersTable tbody');
 			tbody.innerHTML = players.map((p, i) => `
 				<tr data-i="${i}">
-					<td><input type="number" value="${p.num}" onchange="players[${i}].num=+this.value" min="1" max="99"></td>
+					<td><input type="number" value="${p.num}" onchange="players[${i}].num=+this.value" min="1" max="99" style="width:50px"></td>
 					<td><input type="text" value="${esc(p.name)}" onchange="players[${i}].name=this.value"></td>
 					<td><select onchange="players[${i}].pos=this.value">
 						<option value="Вр" ${p.pos==='Вр'?'selected':''}>Вратарь</option>
 						<option value="Защ" ${p.pos==='Защ'?'selected':''}>Защитник</option>
 						<option value="Нап" ${p.pos==='Нап'?'selected':''}>Нападающий</option>
 					</select></td>
+					<td><input type="date" value="${p.birthdate||''}" onchange="players[${i}].birthdate=this.value" style="width:130px"></td>
+					<td><select onchange="players[${i}].grip=this.value">
+						<option value="" ${!p.grip?'selected':''}>—</option>
+						<option value="left" ${p.grip==='left'?'selected':''}>Левый</option>
+						<option value="right" ${p.grip==='right'?'selected':''}>Правый</option>
+					</select></td>
+					<td><input type="number" value="${p.height||''}" onchange="players[${i}].height=this.value?+this.value:''" placeholder="см" style="width:60px"></td>
+					<td><input type="number" value="${p.weight||''}" onchange="players[${i}].weight=this.value?+this.value:''" placeholder="кг" style="width:60px"></td>
 					<td style="display:flex;gap:6px;align-items:center">
 						${p.photo ? `<img src="${esc(p.photo)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0">` : '<span style="color:#bbb;font-size:1.2rem">○</span>'}
 						<input type="file" accept="image/*" onchange="uploadPhoto(${i}, this)" style="font-size:.75rem;flex:1">
@@ -240,9 +252,13 @@
 			const num = document.getElementById('pNum').value;
 			const name = document.getElementById('pName').value.trim();
 			const pos = document.getElementById('pPos').value;
+			const birthdate = document.getElementById('pBirthdate').value;
+			const grip = document.getElementById('pGrip').value;
+			const height = document.getElementById('pHeight').value ? +document.getElementById('pHeight').value : '';
+			const weight = document.getElementById('pWeight').value ? +document.getElementById('pWeight').value : '';
 			const fileInput = document.getElementById('pPhotoFile');
 			if (!num || !name) return showToast('Заполните номер и имя', true);
-			const obj = { num: +num, name, pos };
+			const obj = { num: +num, name, pos, birthdate, grip, height, weight };
 			if (fileInput.files[0]) {
 				const fd = new FormData();
 				fd.append('photo', fileInput.files[0]);
@@ -253,6 +269,8 @@
 			players.push(obj);
 			renderPlayers();
 			document.getElementById('pNum').value = ''; document.getElementById('pName').value = '';
+			document.getElementById('pBirthdate').value = ''; document.getElementById('pGrip').value = '';
+			document.getElementById('pHeight').value = ''; document.getElementById('pWeight').value = '';
 			fileInput.value = '';
 			showToast('Игрок добавлен');
 		}
