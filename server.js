@@ -77,9 +77,13 @@ const defaults = {
     {date:'2026-08-08',opponent:'Катайск',home:false,score:null,status:'upcoming'},
     {date:'2026-08-15',opponent:'Курган',home:true,score:null,status:'upcoming'}
   ],
-  'gallery.json': [],
+  'gallery.json': [
+    {category:'team',label:'Командное фото 2026',className:'wide',src:'https://downloader.disk.yandex.ru/preview/323aa9ba0d2bf1b569cd6fc6d01bb74ce3efbaddd20cbcce7cdda360708be25e/6a121e22/F8GrUs-1Nj38uUqyAVRcbvaSfKZzaB8R24XIj9ix1ATf1hoaFXB1IBQgPbZdHZ2IJ0zvTOAbo5ENHT4klvy3wg%3D%3D?uid=0&filename=otS58YAqtcWtSm3VoVarOG--ImYJvWwUCHuxQywUHkO0qi7Mps8zRcpRkSW_KKMKUgJbn35D5kCqPCobf9AIz_M_.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&is_direct_zip_experiment=1&size=2048x2048'},
+    {category:'match',label:'Матч с Зауральем'},
+    {category:'training',label:'Тренировка на льду'}
+  ],
   'news.json': [],
-  'contacts.json': { address:'', arena:'', phone:'', email:'', hours:'', socialVk:'', socialTg:'', socialYt:'' }
+  'contacts.json': { address:'641800, г. Шадринск, ул. Спортивная, д. 1', arena:'Ледовая арена «Шадр»', phone:'+7 (35253) 3-45-67', email:'info@hc-shadr.ru', hours:'Пн–Пт: 9:00 – 20:00<br>Сб–Вс: 10:00 – 18:00', socialVk:'https://vk.com/hcshadr', socialTg:'https://t.me/hcshadr', socialYt:'https://youtube.com/@hcshadr' }
 };
 
 // Ensure data files exist
