@@ -169,6 +169,16 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="admin-card">
+			<h2>Резервное копирование</h2>
+			<p style="color:var(--gray);font-size:.85rem;margin-bottom:12px">Перед деплоем скачайте бэкап. После деплоя восстановите данные.</p>
+			<div class="toolbar">
+				<button class="btn btn-green" onclick="exportBackup()">💾 Скачать бэкап</button>
+				<button class="btn btn-gold" onclick="document.getElementById('importInput').click()">📂 Восстановить из бэкапа</button>
+				<input type="file" id="importInput" accept=".json" style="display:none" onchange="importBackup(this)">
+			</div>
+		</div>
 	</div>
 
 	<div class="toast" id="toast"></div>
@@ -420,6 +430,35 @@
 		}
 
 		// Init
+		async function exportBackup() {
+			const data = {};
+			for (const key of ['players','matches','gallery','news','contacts']) {
+				data[key] = await (await fetch('/api/'+key)).json();
+			}
+			const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+			const a = document.createElement('a');
+			a.href = URL.createObjectURL(blob);
+			const d = new Date();
+			a.download = `hc-shadr-backup-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
+			a.click();
+			URL.revokeObjectURL(a.href);
+			showToast('Бэкап скачан');
+		}
+		async function importBackup(input) {
+			const file = input.files[0];
+			if (!file) return;
+			try {
+				const text = await file.text();
+				const data = JSON.parse(text);
+				for (const [key, val] of Object.entries(data)) {
+					await fetch('/api/'+key, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(val) });
+				}
+				showToast('Данные восстановлены!');
+				loadPlayers(); loadMatches(); loadGallery(); loadNews(); loadContacts();
+			} catch(e) { showToast('Ошибка: '+e.message, true); }
+			input.value = '';
+		}
+
 		loadPlayers(); loadMatches(); loadGallery(); loadNews(); loadContacts();
 	</script>
 </body>
